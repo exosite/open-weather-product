@@ -47,15 +47,6 @@ info:
 #  #That leaves a list of files with API routes in them.  Each Route file can
 #  #contain one or more actual routes that are synced with Murano.
 #
-#
-#  #If you are hosting your website somewhere other than on Murano, and you want to
-#  #tighten up what Cross Origin calls are allowed, you can set that here.
-#
-#  #Either point to a YAML file
-#  cors: "cors.yaml"
-#  #Or include it directly
-#  cors: {"origin":true,"methods":["HEAD","GET","POST","PUT","DELETE","OPTIONS","PATCH"],"headers":["Content-Type","Cookie","Authorization"],"credentials":true}
-#
 #assets:
 #  location: assets
 #  include: '**/*'
