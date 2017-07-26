@@ -8,5 +8,5 @@
 - [x] need one (1) `endpoint/example.lua` file
 - [x] need one (1) `modules/example.lua` file
 - [x] need one (1) `services/example.lua` file
-- [] _what else?_
+- [ ] _what else?_
 
