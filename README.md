@@ -14,8 +14,8 @@
 
 ## What needs to be done to get this to work
 
-- [ ] 1) Platform support for the yaml file
-- [ ] 2) Ticket in the MuranoCLI to support the `.yml` and `.yaml` extention instead of `.murano`
+- [ ] 1) Platform support for the yaml file (NOTE: support for `Solutionfile.json` will remain)
+- [ ] 2) Extend support in MuranoCLI for `.yml` and `.yaml` extention instead of `.murano`
 - [ ] 3) Convert the example repos from `Solutionfile.json` --to--> `murano.yml`
 - [ ] 4) Document within each code file (what it does, why it's there, how to use, what options exists)
 
