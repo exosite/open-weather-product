@@ -23,4 +23,4 @@
 ## Future
 
 - Update examples to use `require`
-- 
+- Once support is added to the platform for running an `init` script for the solution context we need at add support for it in the `solultion.yml`
