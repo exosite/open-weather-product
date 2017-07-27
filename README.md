@@ -14,7 +14,9 @@
 
 ## What needs to be done to get this to work
 
-- [ ] 1) Platform support for the yaml file (NOTE: support for `Solutionfile.json` will remain)([MUR-3648](https://i.exosite.com/jira/browse/MUR-3648), Renaud)
+- [ ] 1) Platform support for the yaml file
+    - NOTE: support for `Solutionfile.json` will remain
+    - [JIRA Ticket: MUR-3648](https://i.exosite.com/jira/browse/MUR-3648), Renaud
 - [ ] 2) Extend support in MuranoCLI for `.yml` and `.yaml` extention instead of `.murano`(Landon)
 - [ ] 3) Convert the example repos from `Solutionfile.json` --to--> `murano.yml` (AE)
 - [ ] 4) Document within each code file (what it does, why it's there, how to use, what options exists) (AE)
