@@ -33,7 +33,7 @@ info:
 #
 routes:
   #Start off with the directory name we want to keep everything in.
-  location: routes
+  location: endpoints
 
   #Then use globs to find all of the files that can contain route code.
   #If using single glob, then can be just the string.
@@ -54,7 +54,7 @@ assets:
 
 modules:
   location: modules
-  include: ['*.lua', '*/*.lua']
+  include: ['*.lua', '**/*.lua']
   exclude: ['*_test.lua', '*_spec.lua', '**/.*']
 
 services:
