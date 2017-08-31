@@ -27,7 +27,7 @@ info:
 #
 # The following sections are all optional.
 #
-#  - routes
+#  - endpoint
 #  - assets
 #  - modules
 #  - services
@@ -38,7 +38,7 @@ info:
 # Examples follow.
 #
 #
-routes:
+endpoint:
   #Start off with the directory name we want to keep everything in.
   location: endpoints
 
@@ -50,8 +50,8 @@ routes:
   #If not excluding, use empty array [], or empty node.
   exclude: ['*_test.lua', '*_spec.lua', '**/.*']
 
-  #That leaves a list of files with API routes in them.  Each Route file can
-  #contain one or more actual routes that are synced with Murano.
+  #That leaves a list of files with API endpoints in them.  Each Route file can
+  #contain one or more actual endpoints that are synced with Murano.
 
 assets:
   location: assets
