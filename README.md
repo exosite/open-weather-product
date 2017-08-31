@@ -1,6 +1,6 @@
 # Getting Started Solution Template
 
-This page describes the project structure used to set & update a Murano Solution. Murano templates can be used in two distinct way:
+This page describes the project structure used to set and update a Murano Solution. Murano templates can be used in two distinct ways:
 - To synchronize an existing Murano solution with a local project folder using the [Murano-CLI](http://docs.exosite.com/development/tools/murano-cli/).
 - To publish it as template element on the Murano Exchange marketplace to make it available from other Murano businesses. In such case the source code and repo is obfuscated for the template users. Learn more about [Murano Exchange here](http://docs.exosite.com/reference/reference/ui/exchange/authoring-elements-guide.md).
 
@@ -28,7 +28,7 @@ info          | object | [See in the info section](#info-section) | Metadata abo
 
 ### Optional sections for the template
 
-Following section are optional and their order is not enforced. If not specified related source files will be ignored. The different section sub-items are themself optional and default values are provided.
+Following sections are optional and their order is not enforced. If not specified related source files will be ignored. The different section sub-items are themself optional and default values are provided.
 
 Section name | Format | Example                                            | Description
 -------------|--------|----------------------------------------------------|--------------------------------------------------------------
@@ -62,7 +62,7 @@ version     | string                                                            
 
 #### Assets section
 
-This section declare static files (Such as front-end javascript code & images) served by the Solution public API powered by the [Asset service](http://docs.exosite.com/reference/services/asset/).
+This section declares static files (Such as front-end javascript code and images) served by the Solution public API powered by the [Asset service](http://docs.exosite.com/reference/services/asset/).
 
 ```yaml
 assets:
@@ -81,7 +81,7 @@ default_page | string      | `index.html` | Default asset to serve on the root p
 
 #### Endpoints section
 
-This section declare the different endpoint & backend logic for the solution public API powered by the [Webservice service](http://docs.exosite.com/reference/services/webservice/).
+This section declares the different endpoint and backend logic for the solution public API powered by the [Webservice service](http://docs.exosite.com/reference/services/webservice/).
 
 ```yaml
 endpoints:
@@ -98,7 +98,7 @@ exclude   | list        | `['*_test.lua', '*_spec.lua']` | Pattern allowing to i
 
 ##### File content
 
-Selected files needs to contains valid Lua script. Endpoint are defined using a Lua comment header as follow:
+Selected files need to contains valid Lua script. Endpoints are defined using a Lua comment header as follows:
 
 ```lua
 --#ENDPOINT <method> <path>[ <content_type>]
@@ -137,14 +137,14 @@ exclude   | list        | `['*_test.lua', '*_spec.lua']` | Pattern allowing to i
 
 ##### File content
 
-Selected file needs to contains valid Lua script and should be structured as a standard Lua modules (http://lua-users.org/wiki/ModulesTutorial).
+Selected file needs to contain valid Lua script and should be structured as standard Lua modules (http://lua-users.org/wiki/ModulesTutorial).
 
 **Important note:**
 - All variable & function should be tagged as *local*.
 - The trailing *return* statement is required.
 - The module file relative path matters.
 
-Find more informations regarding modules on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#modules).
+Find more information regarding modules on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#modules).
 
 **Example: ./modules/src/utils.lua**
 
@@ -164,7 +164,7 @@ require("src.utils").hello() -- -> "World"
 
 #### Services section
 
-Section describing Services & related scripting logic for the Solution.
+Section describing Services and related scripting logic for the Solution.
 
 ```yaml
 services:
@@ -181,7 +181,7 @@ exclude   | list | `['*_test.lua', '*_spec.lua']` | Pattern allowing to ignore f
 
 ##### File content
 
-Selected file needs to contains valid Lua script. The service and event can be defined using the following Lua comment to define multiple event handlers in a single file:
+Selected file needs to contain valid Lua script. The service and event can be defined using the following Lua comment to define multiple event handlers in a single file:
 
 ```lua
 --#EVENT <service_alias> <event_type>
@@ -198,7 +198,7 @@ print(event.email)
 print(event.identity)
 ```
 
-If the EVENT tag is missing the file structure is used to represent the service & event as follow.<br>`./services/<service_alias>_<event_type>.lua`
+If the EVENT tag is missing the file structure is used to represent the service and event as follows.<br>`./services/<service_alias>_<event_type>.lua`
 
 **Examples:**
 
@@ -208,4 +208,4 @@ If the EVENT tag is missing the file structure is used to represent the service 
 print(event.email)
 ```
 
-Find more informations regarding eventhandlers on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#script-execution).
+Find more information regarding eventhandlers on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#script-execution).
