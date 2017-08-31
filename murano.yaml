@@ -1,0 +1,37 @@
+formatversion: 1.0.0
+
+info:
+  name: murano
+  summary: One line summary of murano
+  description: |
+    In depth description of murano
+    With lots of details.
+  authors: ['Someone <b@someone.com> (http://someone.tumblr.com/)']
+  version: 1.0.0
+
+# The sections assets, endpoints, modules, and services are optional.
+#
+# They all have defaults values that should work for a majority of the projects out
+# there. But they are all fully configurable to fit the way you want your project
+# to be.
+
+assets:
+  location: assets
+  include: '**/*'
+  exclude: ['**/.*']
+  default_page: index.html
+
+endpoints:
+  location: endpoints
+  include: '**/*.lua'
+  exclude: ['*_test.lua', '*_spec.lua']
+
+modules:
+  location: modules
+  include: '**/*.lua'
+  exclude: ['*_test.lua', '*_spec.lua']
+
+services:
+  location: services
+  include: '**/*.lua'
+  exclude: ['*_test.lua', '*_spec.lua']

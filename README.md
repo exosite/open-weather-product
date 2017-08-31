@@ -11,53 +11,13 @@ getting-started-solution-template/
 ├── assets/index.html
 ├── endpoints/example.lua
 ├── modules/example.lua
-├── services/device.lua
-└── murano.yml
+├── services/user.lua
+└── murano.yaml
 ```
 
-## Template format (murano.yml)
+## Template format (murano.yaml)
 
-We can see the example in [murano.yml](murano.yml) or below.
-
-```yaml
-formatversion: 1.0.0
-
-info:
-  name: murano
-  summary: One line summary of murano
-  description: |
-    In depth description of murano
-    With lots of details.
-  authors: ['someone']
-  version: 1.0.0
-
-# The sections assets, endpoints, modules, and services are optional.
-#
-# They all have defaults values that should work for a majority of the projects out
-# there. But they are all fully configurable to fit the way you want your project
-# to be.
-
-assets:
-  location: assets
-  include: '**/*'
-  exclude: ['**/.*']
-  default_page: index.html
-
-endpoints:
-  location: endpoints
-  include: '**/*.lua'
-  exclude: ['*_test.lua', '*_spec.lua']
-
-modules:
-  location: modules
-  include: '**/*.lua'
-  exclude: ['*_test.lua', '*_spec.lua']
-
-services:
-  location: services
-  include: '**/*.lua'
-  exclude: ['*_test.lua', '*_spec.lua']
-```
+We can see the example in [murano.yaml](murano.yaml).
 
 ### Required sections for the template
 
@@ -88,17 +48,17 @@ info:
   description: |
     In depth description of murano
     With lots of details.
-  authors: [""]
+  authors: ['Someone <b@someone.com> (http://someone.tumblr.com/)']
   version: 1.0.0
 ```
 
-Fieldname   | Format | Example                                                | Description
-------------|--------|--------------------------------------------------------|-----------------------------------------------------------------
-name        | string | `murano`                                               | Nice short and easy. Also must be a valid domain name component.
-summary     | string | `One line summary of murano`                           | Short one line summary of this project.
-description | string | `In depth description of murano with lots of details.` | Longer, multiple paragraph explanation.
-authors     | list   | `['']`                                                 | Who made this project.
-version     | string | `1.0.0 `                                               | The version of the project.
+Fieldname   | Format                                                                                      | Example                                                    | Description
+------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------|-----------------------------------------------------------------
+name        | string                                                                                      | `murano`                                                   | Nice short and easy. Also must be a valid domain name component.
+summary     | string                                                                                      | `One line summary of murano`                               | Short one line summary of this project.
+description | string                                                                                      | `In depth description of murano with lots of details.`     | Longer, multiple paragraph explanation.
+authors     | List of string in format:<br>`'Full name <email.com> (link)'`<br>Each elements being optional | `['Someone <b@someone.com> (http://someone.tumblr.com/)']` | Who made this project.
+version     | string                                                                                      | `1.0.0 `                                                   | The version of the project.
 
 #### Assets section
 
@@ -231,31 +191,21 @@ Selected file needs to contains valid Lua script. The service and event can be d
 **Example: ./services/yyy/xxx.lua**
 
 ```lua
---#EVENT timer timer
-print(request.timer_id)
+--#EVENT user account
+print(event.email)
+
 --#EVENT device2 event
 print(event.identity)
 ```
 
-If the EVENT tag is missing the file structure is used to represent the service & event as follow.<br>Either:<br>`./services/<service_alias>/<event_type>.lua`<br>Or<br>`./services/<service_alias>_<event_type>.lua`
+If the EVENT tag is missing the file structure is used to represent the service & event as follow.<br>`./services/<service_alias>_<event_type>.lua`
 
 **Examples:**
 
-- ./services/timer/timer.lua
+- ./services/user_account.lua
 
 ```lua
-print(request.timer_id)
-```
-
-- ./services/device2_event.lua
-
-```lua
-print(event.identity)
+print(event.email)
 ```
 
 Find more informations regarding eventhandlers on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#script-execution).
-
-## Future
-
-- Update examples to use `require`
-- Once support is added to the platform for running an `init` script for the solution context we need at add support for it in the `murano.yml`
