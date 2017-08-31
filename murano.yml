@@ -1,15 +1,18 @@
 ---
+# The format version of this file. This is required.
+formatversion: 1.0.0
+
 # First up is some metadata about this project.
 info:
-  # Nice short and easy. Also must be a valid domain name component.
-  name: murano
+  # A nice, short and easy name for your solution.
+  name: <solution_name>
 
   # Short one line summary of this project.
-  summary: One line summary of murano
+  summary: One line summary of <solution_name>.
 
   # Longer, multiple paragraph explanation.
   description: |
-    In depth description of murano
+    An in-depth description of <solution_name>.
     
     With lots of details.
 
@@ -22,16 +25,20 @@ info:
 
 ####
 #
-# The sections routes, assets, modules, and services are all optional.
+# The following sections are all optional.
 #
-# They all have defaults values that should work for a majority of the projects out
-# there.  But they are all fully configurable to fit the way you want your project
-# to be.
+#  - endpoint
+#  - assets
+#  - modules
+#  - services
+#
+# NOTE: They all have default values that should work for a majority of the projects,
+# but are all fully configurable to fit the way you want your project to be.
 #
 # Examples follow.
 #
 #
-routes:
+endpoint:
   #Start off with the directory name we want to keep everything in.
   location: endpoints
 
@@ -43,8 +50,8 @@ routes:
   #If not excluding, use empty array [], or empty node.
   exclude: ['*_test.lua', '*_spec.lua', '**/.*']
 
-  #That leaves a list of files with API routes in them.  Each Route file can
-  #contain one or more actual routes that are synced with Murano.
+  #That leaves a list of files with API endpoints in them.  Each Route file can
+  #contain one or more actual endpoints that are synced with Murano.
 
 assets:
   location: assets
@@ -64,8 +71,5 @@ services:
     - '*/*.lua'
   exclude: ['*_test.lua', '*_spec.lua', '**/.*']
 
-
-# The format version of this file. This is required.
-formatversion: 1.0.0
 
 # vim: set et sw=2 ts=2 :
