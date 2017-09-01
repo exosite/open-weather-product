@@ -1,53 +1,23 @@
 formatversion: 1.0.0
 
 info:
-  name: murano
-  summary: One line summary of murano
+  name: <template_name>
+  summary: One line summary of <template_name>
   description: |
-    In depth description of murano
+    In depth description of <template_name>
     With lots of details.
   authors: ['Someone <b@someone.com> (http://someone.tumblr.com/)']
   version: 1.0.0
-
-# The sections assets, endpoints, modules, and services are optional.
-#
-# They all have defaults values that should work for a majority of the projects out
-# there. But they are all fully configurable to fit the way you want your project
-# to be.
-
----
-# The format version of this file. This is required.
-formatversion: 1.0.0
-
-# First up is some metadata about this project.
-info:
-  # A nice, short and easy name for your solution.
-  name: <solution_name>
-
-  # Short one line summary of this project.
-  summary: One line summary of <solution_name>.
-
-  # Longer, multiple paragraph explanation.
-  description: |
-    An in-depth description of <solution_name>.
-    
-    With lots of details.
-
-  # Who made this
-  authors: [""]
-
-  # The version of the Project
-  version: 1.0.0
-
 
 ####
 #
 # The following sections are all optional.
 #
-#  - endpoint
 #  - assets
+#  - endpoints
 #  - modules
 #  - services
+#  - init_script
 #
 # NOTE: They all have default values that should work for a majority of the projects,
 # but are all fully configurable to fit the way you want your project to be.
@@ -62,20 +32,11 @@ assets:
   exclude: ['**/.*']
   default_page: index.html
 
-endpoint:
-  #Start off with the directory name we want to keep everything in.
+endpoints:
   location: endpoints
-
-  #Then use globs to find all of the files that can contain route code.
-  #If using single glob, then can be just the string.
   include: '**/*.lua'
-
-  #Then remove all that match these globs. Again, if a single, can drop the array.
-  #If not excluding, use empty array [], or empty node.
   exclude: ['*_test.lua', '*_spec.lua']
-
-  #That leaves a list of files with API endpoints in them.  Each Route file can
-  #contain one or more actual endpoints that are synced with Murano.
+  cors: {'origin': ['http://localhost:*']}
 
 modules:
   location: modules
@@ -86,3 +47,5 @@ services:
   location: services
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
+
+init_script: init.lua

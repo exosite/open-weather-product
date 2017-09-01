@@ -12,6 +12,7 @@ getting-started-solution-template/
 ├── endpoints/example.lua
 ├── modules/example.lua
 ├── services/user.lua
+├── init.lua
 └── murano.yaml
 ```
 
@@ -31,11 +32,12 @@ info          | object | [See in the info section](#info-section) | Metadata abo
 Following sections are optional and their order is not enforced. If not specified related source files will be ignored. The different section sub-items are themself optional and default values are provided.
 
 Section name | Format | Example                                            | Description
--------------|--------|----------------------------------------------------|--------------------------------------------------------------
+-------------|--------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 assets       | object | [See in the assets section](#assets-section)       | Target source files of the front-end Web application.
 endpoints    | object | [See in the endpoints section](#endpoints-section) | Target source files of the webservice back-end endpoints.
 modules      | object | [See in the modules section](#modules-section)     | Target reusable module source files.
 services     | object | [See in the services section](#services-section)   | Target source files of internal services event handlers.
+init_script  | string | [`./init.lua`](init.lua)                           | Relative Path of the solution initialization script file.<br>This script will get executed once at the end of the template setup and allow to initialize the solution configuration and data.<br>The file must contain valid lua script. Template Lua Modules are accessible.
 
 #### Info section
 
@@ -43,22 +45,22 @@ This section contains meta-information relative to the project.
 
 ```yaml
 info:
-  name: murano
-  summary: One line summary of murano
+  name: <template_name>
+  summary: One line summary of <template_name>
   description: |
-    In depth description of murano
+    In depth description of <template_name>
     With lots of details.
   authors: ['Someone <b@someone.com> (http://someone.tumblr.com/)']
   version: 1.0.0
 ```
 
-Fieldname   | Format                                                                                      | Example                                                    | Description
-------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------|-----------------------------------------------------------------
-name        | string                                                                                      | `murano`                                                   | Nice short and easy. Also must be a valid domain name component.
-summary     | string                                                                                      | `One line summary of murano`                               | Short one line summary of this project.
-description | string                                                                                      | `In depth description of murano with lots of details.`     | Longer, multiple paragraph explanation.
+Fieldname   | Format                                                                                        | Example                                                    | Description
+------------|-----------------------------------------------------------------------------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------------------
+name        | string (`/^[\s-]+$/`)                                                                         | `myTemplate`                                               | Nice short and easy. This is the template name which do not relate to the solution name.
+summary     | string                                                                                        | `One line summary of template`                             | Short one line summary of this template.
+description | string                                                                                        | `In depth description of template with lots of details.`   | Longer, multiple paragraph explanation.
 authors     | List of string in format:<br>`'Full name <email.com> (link)'`<br>Each elements being optional | `['Someone <b@someone.com> (http://someone.tumblr.com/)']` | Who made this project.
-version     | string                                                                                      | `1.0.0 `                                                   | The version of the project.
+version     | string                                                                                        | `1.0.0 `                                                   | The version of the project.
 
 #### Assets section
 
@@ -88,13 +90,15 @@ endpoints:
   location: endpoints
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
+  cors: {'origin': ['http://localhost:*']}
 ```
 
-Fieldname | Format      | Example                        | Description                                                                                                                          | Default value
-----------|-------------|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|--------------
-location  | string      | `endpoints`                    | Root folder name containing the files.                                                                                               | `endpoints`
-include   | string/list | `'**/*.lua'`                   | Pattern (or list of patterns) to select files in the location directory.<br>The pattern search is relative to the `location` folder. | `'**/*.lua'`
-exclude   | list        | `['*_test.lua', '*_spec.lua']` | Pattern allowing to ignore files from the selection.                                                                                 | `[]`
+Fieldname | Format      | Example                              | Description                                                                                                                          | Default value
+----------|-------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|--------------
+location  | string      | `endpoints`                          | Root folder name containing the files.                                                                                               | `endpoints`
+include   | string/list | `'**/*.lua'`                         | Pattern (or list of patterns) to select files in the location directory.<br>The pattern search is relative to the `location` folder. | `'**/*.lua'`
+exclude   | list        | `['*_test.lua', '*_spec.lua']`       | Pattern allowing to ignore files from the selection.                                                                                 | `[]`
+cors      | object      | `{'origin': ['http://localhost:*']}` | Cross origin resource sharing permission setting.                                                                                    | `{}`
 
 ##### File content
 
@@ -141,7 +145,8 @@ Selected file needs to contain valid Lua script and should be structured as stan
 
 **Important note:**
 - All variable & function should be tagged as *local*.
-- The trailing *return* statement is required.
+- The trailing *return* statement is required
+- To avoid confusion with Murano Services, module file name should start with a lower-case letter.
 - The module file relative path matters.
 
 Find more information regarding modules on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#modules).
@@ -156,7 +161,7 @@ end
 return utils
 ```
 
-Can be accessed in event handlers or other modules using:
+Can be accessed in event handlers or other modules using the file full path inside the modules folder:
 
 ```lua
 require("src.utils").hello() -- -> "World"
