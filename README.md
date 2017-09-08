@@ -2,7 +2,7 @@
 
 This page describes the project structure used to set and update a Murano Solution. Murano templates can be used in two distinct ways:
 - To synchronize an existing Murano solution with a local project folder using the [Murano-CLI](http://docs.exosite.com/development/tools/murano-cli/).
-- To publish it as template element on the Murano Exchange marketplace to make it available from other Murano businesses. In such case the source code and repo is obfuscated for the template users. Learn more about [Murano Exchange here](http://docs.exosite.com/reference/reference/ui/exchange/authoring-elements-guide.md).
+- To publish it as template element on the Murano Exchange marketplace to make it available from other Murano businesses. In such case the source code and repo is obfuscated for the template users. Learn more about [Murano Exchange here](http://docs.exosite.com/reference/ui/exchange/authoring-elements-guide.md).
 
 ## Template directories structure
 
