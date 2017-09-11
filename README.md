@@ -116,8 +116,8 @@ The `content_type` is optional and `application/json` is the default value.
 ```lua
 --#ENDPOINT POST /api/user
 print("Creating a new user")
---#ENDPOINT GET /api/user/{user_id}
-print("Fetch a given user" .. request.parameters.user_id)
+--#ENDPOINT GET /api/user/{userId}
+print("Fetch a given user" .. request.parameters.userId)
 ```
 
 Find more information about endpoints in the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#api-endpoint-scripts).
@@ -199,8 +199,8 @@ Selected file needs to contain valid Lua script. The service and event can be de
 --#EVENT user account
 print(event.email)
 
---#EVENT device2 event
-print(event.identity)
+--#EVENT timer timer
+print(request.message)
 ```
 
 If the EVENT tag is missing the file structure is used to represent the service and event as follows.<br>`./services/<service_alias>_<event_type>.lua`
