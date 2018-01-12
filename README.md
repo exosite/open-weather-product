@@ -11,20 +11,20 @@ getting-started-solution-template/
 ├── assets/index.html
 ├── endpoints/example.lua
 ├── modules/example.lua
-├── services/user.lua
+├── services/<service_event>.lua | <service>.yaml
 ├── init.lua
 └── murano.yaml
 ```
 
-## Template format (murano.yaml)
+## Template format [murano.yaml](./murano.yaml)
 
-We can see the example in [murano.yaml](murano.yaml).
+**murano.yaml** is the only required component of a template and defines the solution resources.
 
 ### Required sections for the template
 
 Section name  | Format | Example                                  | Description
 --------------|--------|------------------------------------------|----------------------------------
-formatversion | string | `formatversion: 1.0.0`                   | The format version of this file.
+formatversion | string | `formatversion: 1.0.0`                   | The format version of this file. Must be "1.0.0".
 info          | object | [See in the info section](#info-section) | Metadata about this project.
 
 ### Optional sections for the template
@@ -37,7 +37,7 @@ assets       | object | [See in the assets section](#assets-section)       | Tar
 endpoints    | object | [See in the endpoints section](#endpoints-section) | Target source files of the webservice back-end endpoints.
 modules      | object | [See in the modules section](#modules-section)     | Target reusable module source files.
 services     | object | [See in the services section](#services-section)   | Target source files of internal services event handlers.
-init_script  | string | [`./init.lua`](init.lua)                           | Relative Path of the solution initialization script file.<br>This script will get executed once at the end of the template setup and allow to initialize the solution configuration and data.<br>The file must contain valid lua script. Template Lua Modules are accessible.
+init_script  | string | [`./init.lua`](init.lua)                           | Relative Path of the solution initialization script file.<br>This script will be executed once at the end of the template setup and allow to initialize the solution configuration and data.<br>The file must contain valid lua script and may includes calls to other Lua Modules.
 
 #### Info section
 
@@ -102,7 +102,7 @@ cors      | object      | `{'origin': ['http://localhost:*']}` | Cross origin re
 
 ##### File content
 
-Selected files need to contains valid Lua script. Endpoints are defined using a Lua comment header as follows:
+Selected files need to contains valid Lua script. Endpoints are defined using a Lua comment header as follows (The file name is not relevant):
 
 ```lua
 --#ENDPOINT <method> <path>[ <content_type>]
@@ -111,11 +111,12 @@ Selected files need to contains valid Lua script. Endpoints are defined using a 
 
 The `content_type` is optional and `application/json` is the default value.
 
-**Example: ./endpoints/api/userEndpoints.lua**
+**Example: [./endpoints/example.lua](./endpoints/example.lua)**
 
 ```lua
 --#ENDPOINT POST /api/user
 print("Creating a new user")
+
 --#ENDPOINT GET /api/user/{userId}
 print("Fetch a given user" .. request.parameters.userId)
 ```
@@ -143,15 +144,16 @@ exclude   | list        | `['*_test.lua', '*_spec.lua']` | Pattern allowing to i
 
 Selected file needs to contain valid Lua script and should be structured as standard Lua modules (http://lua-users.org/wiki/ModulesTutorial).
 
-**Important note:**
-- All variable & function should be tagged as *local*.
-- The trailing *return* statement is required
+**Important notes & best practices:**
+- All variables & functions should be tagged as *local*.
+- The trailing *return* statement is required.
 - To avoid confusion with Murano Services, module file name should start with a lower-case letter.
 - The module file relative path matters.
+- As convention name your module object after the module name.
 
 Find more information regarding modules on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#modules).
 
-**Example: ./modules/src/utils.lua**
+**Example: [./modules/src/utils.lua](./modules/src/utils.lua)**
 
 ```lua
 local utils = { variable = "World"}
@@ -169,7 +171,8 @@ require("src.utils").hello() -- -> "World"
 
 #### Services section
 
-Section describing Services and related scripting logic for the Solution.
+Section defines Services configuration and related scripting logic for the Solution.
+Services defined with below section will get configured for the solution.
 
 ```yaml
 services:
@@ -184,16 +187,17 @@ location  | string      | `services`                     | Root folder name cont
 include   | string/list | `'**/*.lua'`                   | Pattern (or list of patterns) to select files in the location directory.<br>The pattern search is relative to the `location` folder. | `'**/*.lua'`
 exclude   | list | `['*_test.lua', '*_spec.lua']` | Pattern allowing to ignore files from the selection.                                                                                 | `[]`
 
-##### File content
+##### _.lua_ Event logic files content
 
-Selected file needs to contain valid Lua script. The service and event can be defined using the following Lua comment to define multiple event handlers in a single file:
+Selected file needs to contain valid Lua scripts used for service event handlers logic. Scripts are triggered when the relevant Murano event occurs.
+The service and event can be defined using the following Lua comment to define multiple event handlers in a single file:
 
 ```lua
 --#EVENT <service_alias> <event_type>
 -- Custom logic goes here
 ```
 
-**Example: ./services/yyy/xxx.lua**
+**Example: [./services/yyy/xxx.lua](./services/yyy/xxx.lua)**
 
 ```lua
 --#EVENT user account
@@ -205,12 +209,28 @@ print(request.message)
 
 If the EVENT tag is missing the file structure is used to represent the service and event as follows.<br>`./services/<service_alias>_<event_type>.lua`
 
-**Examples:**
-
-- ./services/user_account.lua
+**Examples: [./services/user_account.lua](./services/user_account.lua)**
 
 ```lua
 print(event.email)
 ```
 
 Find more information regarding eventhandlers on the [Murano Scripting Reference](http://docs.exosite.com/articles/working-with-apis/#script-execution).
+
+##### _.yaml_ Service configuration files content
+
+Specific configuration parameters can be defined per service using _<service_alias>.yaml_ files in the defined location directory.
+
+Content of the files needs to match the target service configuration parameters.
+
+**Examples: [./services/device2.yaml](./services/device2.yaml)**
+
+```lua
+protocol:
+  name: onep
+provisioning:
+  auth_type: token
+```
+
+This method can also be used with an empty file to configured service which doesn't have any script logic or specific configuration parameters.
+Example: [./services/twilio.yaml](./services/twilio.yaml).

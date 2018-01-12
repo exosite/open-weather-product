@@ -1,10 +1,10 @@
 
 -- Make sure your variables are all "local". Also, module object name should match the module name.
-local example = {}
+local utils = { variable = "World"}
 
-function example.complexThing(args)
-    print("Running complexThing with arguments: "..to_json(args))
+function utils.hello()
+  return utils.variable
 end
 
 -- Module requires a return statement
-return example
+return utils
