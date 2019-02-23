@@ -1,0 +1,36 @@
+
+# Probably want to cache it in sigfox storage instead of passing it everytime
+serviceConfig: [] # This should not be required
+#   - alias: donotchange # Currently not used anywhere on the service
+#     domain: ~ # now need to give the full sigfox url eg. backend-demo.sigfox.com  this is not documented on UI
+#     apiUser: ~
+#     apiPassword: ~
+
+# Following doesn't exists yet in config and is passed in createCallback function
+# Defining it here could then use the x-exosite-init/update service event for auto-bootstrap.
+# Then we woulnd need to to bootstrap the callback in the init.lua
+# We could also defined in above serviceConfig instead
+# callbacks:
+#   - apiUser: "<your Sigfox api user name>",
+#     #productId: => solution id
+#     deviceTypeId: "<your Sigfox device type id>",
+#     # How would ExoSense set the following from App?
+#     payloadConfig: "temperature::uint:8 humidity::uint:8 alarm::bool:7",
+#     productResources:
+#       data_in:
+#         temperature: "{customData#temperature}",
+#         humidity: "{customData#humidity}",
+#         alarm: "{customData#alarm}"
+#     # Consider using
+#     payloadConfig: [{
+#       resource: "data_in.temperature",
+#       type: "uint",
+#       size: 8
+#     }, {
+#       resource: "data_in.humidity",
+#       type: "uint",
+#       size: 8
+#     }, {
+#       resource: "data_in.alarm",
+#       type: "bool" # always 1
+#     }]

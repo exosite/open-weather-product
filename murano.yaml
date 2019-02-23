@@ -1,51 +1,34 @@
+---
+# The format version of this file. This is required.
 formatversion: 1.0.0
 
 info:
-  name: <template_name>
-  summary: One line summary of <template_name>
-  description: |
-    In depth description of <template_name>
-    With lots of details.
-  authors: ['Someone <b@someone.com> (http://someone.tumblr.com/)']
+  name: Sigfox Murano Product
+  summary: Sigfox integration for Murano Products
+  description: Sigfox integration for Murano Products
+  authors:
+    - 'exosite'
   version: 1.0.0
-
-####
-#
-# The following sections are all optional.
-#
-#  - assets
-#  - endpoints
-#  - modules
-#  - services
-#  - init_script
-#
-# NOTE: They all have default values that should work for a majority of the projects,
-# but are all fully configurable to fit the way you want your project to be.
-#
-# Examples follow.
-#
-####
-
-assets:
-  location: assets
-  include: '**/*'
-  exclude: ['**/.*']
-  default_page: index.html
 
 endpoints:
   location: endpoints
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
-  cors: {'origin': ['http://localhost:*']}
+
+# assets:
+#   location: files
+#   include: '**/*'
+#   exclude: []
+#   default_page: docs # This only works for assets not for any other endpoints
 
 modules:
   location: modules
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
 
-services: # Also applies for service configuration using .yaml format.
+services:
   location: services
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
 
-init_script: init.lua
+# init_script: init.lua
