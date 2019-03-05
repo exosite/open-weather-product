@@ -58,6 +58,7 @@ if request.parameters.deviceTypeId == nil or request.parameters.deviceTypeId == 
 end
 
 return Sigfox.removeCallback({
+  productId = context.solution_id,
   apiUser = request.parameters.apiUser,
   deviceTypeId = request.parameters.deviceTypeId,
 })
