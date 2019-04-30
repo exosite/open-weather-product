@@ -1,6 +1,6 @@
 
 protocol:
-  name: onep
+  name: "onep:v1/http"
 provisioning:
   auth_type: token
 
