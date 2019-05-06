@@ -6,31 +6,30 @@ serviceConfig: [] # This should not be required
 #     apiUser: ~
 #     apiPassword: ~
 
-# Following doesn't exists yet in config and is passed in createCallback function
-# Defining it here could then use the x-exosite-init/update service event for auto-bootstrap.
-# Then we woulnd need to to bootstrap the callback in the init.lua
-# We could also defined in above serviceConfig instead
+# domain: "<Sigfox domain>" eg. backend-demo.sigfox.com
+# apiUser: "<your Sigfox api user name>"
+# apiPassword: "<your Sigfox api user password>"
+
 # callbacks:
-#   - apiUser: "<your Sigfox api user name>",
-#     #productId: => solution id
-#     deviceTypeId: "<your Sigfox device type id>",
-#     # How would ExoSense set the following from App?
-#     payloadConfig: "temperature::uint:8 humidity::uint:8 alarm::bool:7",
-#     productResources:
-#       data_in:
-#         temperature: "{customData#temperature}",
-#         humidity: "{customData#humidity}",
-#         alarm: "{customData#alarm}"
-#     # Consider using
-#     payloadConfig: [{
-#       resource: "data_in.temperature",
-#       type: "uint",
-#       size: 8
-#     }, {
-#       resource: "data_in.humidity",
-#       type: "uint",
-#       size: 8
-#     }, {
-#       resource: "data_in.alarm",
-#       type: "bool" # always 1
-#     }]
+#   - deviceTypeId: "<your Sigfox device type id>"
+#     payloadConfig:
+#       - resource: "data_in.state"
+#         definition: ":bool:7"
+#       - resource: "data_in.overtemp"
+#         definition: ":bool:6"
+#       - resource: "data_in.overstress"
+#         definition: ":bool:5"
+#       - resource: "data_in.gpsvalid"
+#         definition: ":bool:4"
+#       - resource: "data_in.batterylevel"
+#         definition: "0:uint:4"
+#       - resource: "data_in.temperature"
+#         definition: "1:uint:8"
+#       - resource: "data_in.reserved"
+#         definition: "2:uint:8"
+#       - resource: "data_in.gsensor"
+#         definition: "3:uint:8"
+#       - resource: "data_in.gpslat"
+#         definition: "4:uint:32"
+#       - resource: "data_in.gpslon"
+#         definition: "8:uint:32"

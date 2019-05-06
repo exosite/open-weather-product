@@ -3,20 +3,3 @@ protocol:
   name: "onep:v1/http"
 provisioning:
   auth_type: token
-
-resources:
-  config_io:
-    allowed: []
-    format: string
-    settable: true
-    unit: ''
-  data_in:
-    allowed: []
-    format: string
-    settable: true
-    unit: ''
-  data_out:
-    allowed: []
-    format: string
-    settable: true
-    unit: ''

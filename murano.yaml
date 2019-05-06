@@ -10,10 +10,10 @@ info:
     - 'exosite'
   version: 1.0.0
 
-endpoints:
-  location: endpoints
-  include: '**/*.lua'
-  exclude: ['*_test.lua', '*_spec.lua']
+# endpoints:
+#   location: endpoints
+#   include: '**/*.lua'
+#   exclude: ['*_test.lua', '*_spec.lua']
 
 # assets:
 #   location: files
