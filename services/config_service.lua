@@ -37,13 +37,11 @@ if service.service == "sigfox" and (service.action == "added" or service.action 
     end
   end
 
-  if next(channels) ~= nil then
-    configIO.set({
-      last_edited = isoTime,
-      last_editor = "sigfox",
-      channels = channels
-    })
-  end
+  configIO.set({
+    last_edited = isoTime,
+    last_editor = "sigfox",
+    channels = channels
+  })
 
   -- When Sigfox service configuration changes fetch new data
   -- Eg. if password change or else..
