@@ -43,7 +43,7 @@ function configIO.createChannel(resource, definition)
   if channelName == "gps" and nestJson == "lng" or nestJson == "lat" then
     properties.data_type = "LOCATION"
     properties.data_unit = "LAT_LONG_ALT"
-  elseif nestJson ~= nil then
+  elseif nestJson ~= "" then
     properties.data_type = "JSON"
   elseif channelName then
     properties.data_type = getType(definition)
