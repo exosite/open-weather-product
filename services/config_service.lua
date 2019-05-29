@@ -5,15 +5,6 @@ function join(t1, t2)
   return t1
 end
 
-function getType(definition)
-  if definition:match("bool") ~= nil then
-    return "BOOLEAN"
-  elseif definition:match("char") ~= nil then
-    return "STRING"
-  end
-  return "NUMBER"
-end
-
 if service.service == "sigfox" and (service.action == "added" or service.action == "updated") then
   local configIO = require("configIO")
   local currentTime = os.time(os.date("!*t"))
@@ -22,6 +13,11 @@ if service.service == "sigfox" and (service.action == "added" or service.action 
   local parameters = Config.getParameters({service = "sigfox"})
   local payloadConfigs = {}
   local channels = {}
+  local current = configIO.get()
+  if current ~= nil and current.config  ~= nil and current.config.channels ~= nil then
+    channels = current.config.channels
+  end
+
   if parameters.parameters.callbacks ~= nil then
     for k, v in pairs(parameters.parameters.callbacks) do
       if v.payloadConfig ~= nil then
@@ -29,10 +25,10 @@ if service.service == "sigfox" and (service.action == "added" or service.action 
       end
     end
   end
+
   for k, v in pairs(payloadConfigs) do
     local channelName, channel = configIO.createChannel(v.resource, v.definition)
-
-    if channelName ~= "" then
+    if channelName and channels[channelName] == nil then
       channels[channelName] = channel
     end
   end
