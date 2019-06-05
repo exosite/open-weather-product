@@ -7,12 +7,18 @@ end
 
 local configIO = require("configIO")
 local configIOData = configIO.get()
+
 if configIOData.config ~= "" then
   identityState.config_io = {
     timestamp = configIOData.timestamp,
     set = configIOData.config,
     reported = configIOData.config
   }
+end
+
+local transform = require("transform")
+if transform != nil and transform.convertIdentityState ~= nil then
+  identityState = transform.convertIdentityState(identityState)
 end
 
 return identityState
