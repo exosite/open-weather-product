@@ -14,8 +14,11 @@ if service.service == "sigfox" and (service.action == "added" or service.action 
   local payloadConfigs = {}
   local channels = {}
   local current = configIO.get()
-  if current ~= nil and current.config  ~= nil and current.config.channels ~= nil then
-    channels = current.config.channels
+  if current ~= nil and current.config ~= "" then
+    local current_config, err = json.parse(current.config)
+    if err == nil then
+      channels = current_config.channels
+    end
   end
 
   if parameters.parameters.callbacks ~= nil then

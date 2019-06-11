@@ -14,6 +14,9 @@ function configIO.get()
       end
     end
   end
+  if configIOCache == nil then
+    return { config = "" }
+  end
   local configIOString, err = json.stringify(configIOCache.config)
   if err ~= nil then
     print("The config_io encode to JSON error", err)
