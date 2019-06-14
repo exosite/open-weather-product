@@ -14,7 +14,7 @@ if configIOData.config ~= "" and next(identities.devices) ~= nil then
       set = configIOData.config,
       reported = configIOData.config
     }
-    if transform != nil and transform.convertIdentityState ~= nil then
+    if transform ~= nil and transform.convertIdentityState ~= nil then
       identities.devices[k].state = transform.convertIdentityState(identities.devices[k].state)
     end
   end
