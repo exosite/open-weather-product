@@ -10,6 +10,9 @@ info:
     - 'exosite'
   version: 1.0.0
 
+options:
+  safeNamespace: vendor
+
 # endpoints:
 #   location: endpoints
 #   include: '**/*.lua'

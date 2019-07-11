@@ -7,7 +7,7 @@ end
 local configIO = require("configIO")
 local configIOData = configIO.get()
 if configIOData.config ~= "" and next(identities.devices) ~= nil then
-  local transform = require("transform")
+  local transform = require("vendor.transform")
   for k, identity in pairs(identities.devices) do
     identities.devices[k].state.config_io = {
       timestamp = configIOData.timestamp,

@@ -16,7 +16,7 @@ if configIOData.config ~= "" then
   }
 end
 
-local transform = require("transform")
+local transform = require("vendor.transform")
 if transform ~= nil and transform.convertIdentityState ~= nil then
   identityState = transform.convertIdentityState(identityState)
 end

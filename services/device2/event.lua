@@ -1,5 +1,5 @@
 
-local transform = require("transform")
+local transform = require("vendor.transform")
 if event.payload ~= nil and transform ~= nil and transform.convertIdentityState ~= nil then
   for i, data in ipairs(event.payload) do
     if data.values ~= nil and data.values.data_in ~= nil then
