@@ -1,38 +1,17 @@
+-- This file enable device data transformation for the template user
+--
+-- This file is in the 'vendor' safeNamespace and changes will persists upon template updates
+
 local transform = {}
 
--- Below an example of transforming the GPS data values
+function transform.data_in(cloud_data)
+  -- Transform data from the 3rd party service to Murano
+  return cloud_data
+end
 
--- function convertGps(data_in_source)
---   local data_in, err = from_json(data_in_source)
---   if err ~= nil then
---     return data_in_source
---   end
-
---   if data_in.gps ~= nil then
---     if data_in.gps.lat ~= nil then
---       data_in.gps.lat = data_in.gps.lat / 1000000
---     end
---     if data_in.gps.lng ~= nil then
---       data_in.gps.lng = data_in.gps.lng / 1000000
---     end
---   end
-
---   return to_json(data_in)
--- end
-
--- function transform.convertIdentityState(state)
---   if state == nil or state.data_in == nil then
---     return state
---   end
-
---   if state.data_in.reported == nil then
---     state.data_in = convertGps(state.data_in)
---   else
---     state.data_in.reported = convertGps(state.data_in.reported)
---     state.data_in.set = convertGps(state.data_in.set)
---   end
-
---   return state
--- end
+function transform.data_out(murano_data)
+  -- Transform data from Murano to the 3rd party service
+  return murano_data
+end
 
 return transform

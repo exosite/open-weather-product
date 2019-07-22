@@ -3,20 +3,19 @@
 formatversion: 1.0.0
 
 info:
-  name: Sigfox Murano Product
-  summary: Sigfox integration for Murano Products
-  description: Sigfox integration for Murano Products
+  name: Cloud to Murano Product
+  description: Template example for integrating 3rd party could to Murano Products
   authors:
     - 'exosite'
-  version: 1.0.0
+  version: 0.1.0
 
 options:
   safeNamespace: vendor
 
-# endpoints:
-#   location: endpoints
-#   include: '**/*.lua'
-#   exclude: ['*_test.lua', '*_spec.lua']
+endpoints:
+  location: endpoints
+  include: '**/*.lua'
+  exclude: ['*_test.lua', '*_spec.lua']
 
 # assets:
 #   location: files
@@ -34,4 +33,4 @@ services:
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
 
-# init_script: init.lua
+init_script: init.lua

@@ -4,19 +4,14 @@ if identities.code ~= nil then
   return identities
 end
 
-local configIO = require("configIO")
-local configIOData = configIO.get()
-if configIOData.config ~= "" and next(identities.devices) ~= nil then
-  local transform = require("vendor.transform")
+local configIO = require("vendor.configIO")
+if configIO and next(identities.devices) ~= nil then
   for k, identity in pairs(identities.devices) do
     identities.devices[k].state.config_io = {
-      timestamp = configIOData.timestamp,
-      set = configIOData.config,
-      reported = configIOData.config
+      timestamp = configIO.timestamp,
+      set = configIO.config_io,
+      reported = configIO.config_io
     }
-    if transform ~= nil and transform.convertIdentityState ~= nil then
-      identities.devices[k].state = transform.convertIdentityState(identities.devices[k].state)
-    end
   end
 end
 

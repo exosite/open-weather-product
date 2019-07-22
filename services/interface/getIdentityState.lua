@@ -5,20 +5,14 @@ if identityState.code ~= nil then
   return identityState
 end
 
-local configIO = require("configIO")
-local configIOData = configIO.get()
+local configIO = require("vendor.configIO")
 
-if configIOData.config ~= "" then
+if configIO then
   identityState.config_io = {
-    timestamp = configIOData.timestamp,
-    set = configIOData.config,
-    reported = configIOData.config
+    timestamp = configIO.timestamp,
+    set = configIO.config_io,
+    reported = configIO.config_io
   }
-end
-
-local transform = require("vendor.transform")
-if transform ~= nil and transform.convertIdentityState ~= nil then
-  identityState = transform.convertIdentityState(identityState)
 end
 
 return identityState

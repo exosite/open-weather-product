@@ -1,0 +1,253 @@
+# Definition of the 3rd party service API
+# General Service integration documentation: https://github.com/exosite/open_api_integration
+#
+# This service definition is required for reaching out the 3rd party API from Murano
+
+swagger: "2.0"
+
+################################################################################
+#                           Service Metadata                                   #
+################################################################################
+info:
+  version: "1.0"
+  title: <Cloud Service Name>
+  description: |
+              Full description of the service and link to the 3rd party feature documenation
+  contact:
+    name: maintainer name
+    email: maintainer@email.com
+
+################################################################################
+#                            API Information                                   #
+################################################################################
+
+# A hostname with a valid, signed, and active TSL certificate is required.
+host: api.cloud.com
+basePath: /
+
+################################################################################
+#                          Solution lifecycle Events                           #
+################################################################################
+# Following Operation should generally be restricted with "x-exosite-restricted: true"
+x-exosite-init: initAccount # Triggered by Murano when this service is enabled in a solution
+x-exosite-info: getAccountInfo # Triggered by Murano to retrieve custom information about the service solution namespace
+x-exosite-update: updateSettings # Triggered by Murano when the solution service configuration is updated
+x-exosite-gc: delAccount # Triggered by Murano when the service is removed from a solution or if the solution is deleted
+
+################################################################################
+#                      Service Security & authentication                       #
+################################################################################
+securityDefinitions:
+  Bearer:
+    type: bearer # See other way to pass credentials in https://github.com/exosite/open_api_integration#security-definitions-object
+    name: token # Must match the below parameter name
+    description: bearer scheme token authentication defined in https://tools.ietf.org/html/rfc6750
+    x-exosite-restricted: true
+security: # Applies to all endpoints below
+  - Bearer: []
+
+################################################################################
+#                      Service Configuration Parameters                        #
+################################################################################
+x-exosite-config-parameters:
+  - name: token
+    type: string
+    description: The credentials provided by the 3rd party to access the remote api
+    required: true # Indicates this parameter is required during configuration
+  - name: callback_token
+    type: string
+    description: |
+      The credentials to authenticate the 3rd party api to call Murano api.
+      The initial token is generated automatically, however you can set here a new value
+      if the case the original token got compromised.
+  - name: callback_url
+    type: string
+    description: The callback url to setup in 3rd party settings
+    readOnly: true # Generated automatically in ./modules/authentication.lua
+
+################################################################################
+#                                Operations                                    #
+################################################################################
+parameters:
+  # Solution Id indicate which peer remote namespace to use.
+  # If the 3rd party cloud has a single namespace per credentials (token) this
+  # parameter might not be needed.
+  AccountId:
+    name: account_id
+    x-exosite-from: solution_id # Indicate this value is injected from the user solution_id
+    x-exosite-restricted: true # Indicate the user cannot provide this parameter
+    type: string
+    in: path
+    description: The 3rd party account namespace.
+    required: true
+  DeviceId:
+    name: device_id
+    x-exosite-from: identity # The name in Murano solution context
+    type: string
+    in: path
+    description: The device identifier
+    required: true
+  Settings:
+    name: settings
+    in: body
+    description: The 3rd party account settings.
+    required: true
+    schema:
+      $ref: "#/definitions/Settings"
+
+paths:
+  # Administration endpoint used by Murano solution lifecycle events
+  # Those operation uses the "x-exosite-restricted" to prevent the user to access them directly from scripting
+  /{account_id}:
+    parameters:
+      - $ref: "#/parameters/AccountId"
+    post:
+      description: Initialize the 3rd party account settings. Eg. the callback url
+      operationId: initAccount
+      x-exosite-restricted: true # Indicate that this operation cannot be called from user scripts
+      parameters:
+        - $ref: "#/parameters/Settings"
+      responses:
+        default:
+          description: Account initialized
+    get:
+      description: Used by Murano to get remote information
+      operationId: getAccountInfo
+      responses:
+        default:
+          description: Account info
+          schema:
+            $ref: "#/definitions/AccountInfo"
+    put:
+      description: Used by Murano to update the 3rd party account settings. Eg., the callback url
+      operationId: updateSettings
+      x-exosite-restricted: true
+      parameters:
+        - $ref: "#/parameters/Settings"
+      responses:
+        default:
+          description: Settings updated
+    delete:
+      description: Called by Murano when the solution is deleted.
+      operationId: delAccount
+      x-exosite-restricted: true
+      responses:
+        default:
+          description: GC successfull.
+
+  # 3rd party api operations available from Murano scripting
+  # Define below the function used in ./modules/murano2cloud.lua
+  /{account_id}/sync:
+    parameters:
+      - $ref: "#/parameters/AccountId"
+    get:
+      description: Pool updates
+      operationId: sync
+      responses:
+        default:
+          description: Sync data retrieved
+          schema:
+            description: Data to sync
+            type: array
+            items:
+              type: object
+              description: device data
+              properties:
+                device_id:
+                  type: string
+                  description: device id
+                data:
+                  $ref: "#/definitions/Data"
+
+  /{account_id}/device/{device_id}:
+    parameters:
+      - $ref: "#/parameters/AccountId"
+      - $ref: "#/parameters/DeviceId"
+    post:
+      description: Create a new device in remote cloud.
+      operationId: addIdentity
+      parameters:
+        - name: body
+          in: body
+          description: Some additional data
+          schema:
+            $ref: "#/definitions/Data"
+      responses:
+        default:
+          description: Device created
+    put:
+      description: Update a device data.
+      operationId: setIdentitystate
+      parameters:
+        - name: body
+          in: body
+          description: Some additional data
+          required: true
+          schema:
+            $ref: "#/definitions/Data"
+      responses:
+        default:
+          description: Device created
+    get:
+      description: Retrieve a device data
+      operationId: getIdentity
+      responses:
+        default:
+          description: Successfully returned the device data
+          schema:
+            $ref: "#/definitions/Data"
+    delete:
+      description: Remove a device from remote cloud.
+      operationId: removeIdentity
+      responses:
+        default:
+          description: Device removed
+
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+  Data:
+    type: object
+    description: Device Data
+    additionalProperties: true
+
+  CallbackUrl:
+    type: string
+    description: The callback url for the 3rd party to reach Murano.
+
+  Settings:
+    description: The service settings for a solution.
+    type: object
+    properties:
+      callback_url:
+        $ref: "#/definitions/CallbackUrl"
+    required: [callback_url]
+
+  AccountInfo:
+    description: The service settings & information for a solution.
+    type: object
+    properties:
+      callback_url::
+        $ref: "#/definitions/CallbackUrl"
+      additionalInfo:
+        type: object
+        description: Some additional information from the service used for display purpose
+
+################################################################################
+#                                 Events                                       #
+################################################################################
+# External events are not supported yet and solution need to use the
+# 'webservice' custom api to generate event from the outside.
+# Feature tracking ticket: MUR-9171
+# x-exosite-events:
+#    callback:
+#       type:             HTTP
+#       description:      Callback being triggered.
+#       parameters:
+#         - name:         eventData
+#           in:           body
+#           description:  The data transmitted by the event
+#           required:     true
+#           schema:
+#             $ref: "#/definitions/Data"

@@ -1,35 +1,95 @@
 
-# Sigfox Murano Product
+# cloud2murano Murano Product
 
-This project is a [Sigfox](https://www.sigfox.com) integration for Murano Products. It is compatible with any Murano applications including ExoSense.
+This project is a template of Murano Product for 3rd party integration providing connectivity to the devices.
+
+As each cloud integration has its particularity, this project requires modification to fit the 3rd party setup and not a generic plug&play solution.
 
 ### Setup
 
-- First you will need a [Sigfox backend account](https://backend.sigfox.com) ready for your devices connectivity.
-- Navigate to [Murano Exchange IoT marketplace](https://www.exosite.io/business/<business>/exchange/catalog)
-- In the 'Service' section add the 'Sigfox' service.
-- In the 'Solution Template' section add the 'Sigfox Product' template.
-- Then create your product solution using the 'Sigfox Product' template.
-- Go to the product configuration on [Murano -> Sigfox Product -> services -> Sigfox](https://www.exosite.io/business/<business>/connectivity/<product>/services)
-- Input your Sigfox API credentials generated from your [Sigfox backend account](https://backend.sigfox.com)
-- Add one (or more) callbacks matching your [Sigfox deviceType Id](https://backend.sigfox.com/devicetype/list)
-- Finally add the 12bytes resource mapping using the [Sigfox decoding grammar](http://docs.exosite.com/quickstarts/sigfox/decoding-grammar/)
-- All set, any device reporting to your [Sigfox deviceType Id](https://backend.sigfox.com/devicetype/list) will be provisionned automatically in your Murano Product.
+Following customization steps are required to accomplish the integration.
 
-Find More information on http://docs.exosite.com/quickstarts/sigfox/
+- Define & publish the 3rd party API as a Murano service
+- Update this project
+- Publish the 3rd party integration template to Murano
 
-### Additional setup for ExoSense
+##### 3rd party Murano service
+
+First you need to define the 3rd party service API using the OpenApi swagger definition.
+You can follow the general documentation from https://github.com/exosite/open_api_integration.
+But also follow the guidelines from the example available on this project in ./<CloudServiceSwagger>.yaml.
+
+For example this sample assumes the use of a `token` parameter for authentication to the 3rd party.
+
+Publish the service swagger on Murano Exchange IoT marketplace (http://docs.exosite.com/reference/ui/exchange/authoring-elements-guide/) and test your integration with a blank Murano solution.
+
+Once ready publish the service as 'Public' so it can be used. (This action is currently limited so you might need to contact Exosite support).
+
+##### Update this project
+
+This project now need to be adapted for the 3rd party connectivity needs.
+
+1. Clone this repository
+
+2. Update this project with the newly created service.
+
+Update `<CloudServiceName>` by the actual service alias you used to publish the service on Murano IoT marketplace.
+Important in Lua, service starts with a Capital letter.
+Don't forget to rename the files ./service/<CloudServiceName>.yaml too.
+
+3. Modify the callback authentication logic
+
+This sample assumes a single callback endpoint for each event defined in ./endpoints/callbacks.lua & ./modules/authentication.lua .
+We use a token generated at solution bootstrap & passed as query parameter to authenticate the 3rd party.
+Other authentication system can be defined there.
+
+4. Modify the data structure mapping logic
+
+2 modules are used for data mapping with the 3rd service.
+
+./modules/cloud2murano.lua for incoming messages.
+This files parse & dispatches the data coming from the 3rd party to Murano device state service and to the applications.
+You need to modify this file to match the 3rd party events for device provisioning, deletion and incoming sensor data.
+
+./modules/murano2cloud.lua for outgoing messages.
+The payload structure needed in this files depends on the the swagger definition of the service.
+
+[5. Modify pooling logic]
+
+If the 3rd party requires a regular pooling syncronisation, that logic needs to be set in the ./services/timer_timer.lua eventhandler.
+
+##### Publish the 3rd party integration template to Murano
+
+Once the project setup is ready and updated on your repository.
+You can test it by creating a new product `From scratch` on the Murano solution page and provide your git repo url.
+
+Find more about Murano template on https://github.com/exosite/getting-started-solution-template.
+
+Once satisfied you will need to publish a Template element on Murano IoT marketplace (http://docs.exosite.com/reference/ui/exchange/authoring-elements-guide/).
+
+**Consumer flow: how to use the template in murano**
+- User go to Murano IoT marketplace select your integration template & click create solution.
+- User go to the newly created product management page under `Services -> <CloudServiceName>` and add the required settings & credentials as defined by your 3rd party service Swagger.
+- (Optional) If callback setup is not automated, user copy/past the callback url from there and add it to the 3rd party setup.
+- The product is then ready to use and can be added to any Murano applications as a regular product.
+
+### Customization
+
+You can also provide some tooling for the template user to extend your integration.
+While you want to be able to provide new version of your template you need to avoid erasing some of the template user changes.
+For this purpose we defines a `safeNamespace` for the user (in ./murano.yaml) every items (modules, endpoints & assets) start with this name will not be remove nor modified by template updates.
+
+User can then safely modify the ./modules/vendor/transform.lua to change the data mapping or even add new public APIs (under `/vendor/*`) to extend the product capability.
+
+If the user don't want to get update, automated updates can be deactivated on the Product `Services -> Config` settings.
+
+_IMPORTANT_: To get persistent product state, related resources needs to be defined in the device2 service resources.
+While editor of this template can change the default setup in ./services/device2.yaml (default setup for Exosense compatibility) are needed by the user from the Product page under `Resources` all resources must have the option `sync` set to `false`!
+
+##### Additional setup for ExoSense
 
 ExoSense application datamodel nest device data into the 'data_in' product resource of type JSON.
-In order to be utilized from exosense the 'data' content have to be described in the 'config_io' resource.
-This template automatically generates the 'config_io' from the Sigfox service callback payloadConfig settings.
+In order to be utilized from exosense the 'data_in' content structure, named channels, have to be described in the 'config_io' resource.
 
-As example a callback resources named "data_in.mydata" will be available to ExoSense using the base type inferred from the Sigfox decoding.
-
-In order to utilize [ExoSense custom type](https://github.com/exosite/industrial_iot_schema/blob/master/data-types.md) the resources nested in 'data_in' needs to be named after the ExoSense type key.
-
-Example: "data_in.temperature" will be of type 'TEMPERATURE'. Matching is case insensitive so "data_in.TEMPERATURE" will be the same.
-
-You can also provides a matching unit types
-
-Example: "data_in.temperature_deg_celsius" OR "data_in.temperature_C" will be of type 'TEMPERATURE' & unit 'DEG_CELSUIS'
+The device2 data structure set in ./services/device2.yaml is already Exosense compatible.
+However template user needs to update the product ./modules/vendor/configIO.lua Module and updates the data structure specific to the product.
