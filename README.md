@@ -93,3 +93,9 @@ In order to be utilized from exosense the 'data_in' content structure, named cha
 
 The device2 data structure set in ./services/device2.yaml is already Exosense compatible.
 However template user needs to update the product ./modules/vendor/configIO.lua Module and updates the data structure specific to the product.
+
+### Known limitations
+
+- As external service don't have an event API, current version requires the webservice to add custom routes for callback. (MUR-9171)
+- If the 3rd party api requires signature header, the signature management needs to be done in Lua.
+- Device2 service doesn't support batch functionality yet.
