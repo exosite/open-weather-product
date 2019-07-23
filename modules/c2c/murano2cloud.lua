@@ -4,7 +4,7 @@ local murano2cloud = {}
 
 murano2cloud.alias = "<CloudServiceName>" -- Change this matching the 3rd party Murano service alias
 
-local transform = require("vendor.transform")
+local transform = require("vendor.c2c.transform")
 
 function murano2cloud.addIdentity(identity)
   return murano.services[murano2cloud.alias].addIdentity({ identity = identity })

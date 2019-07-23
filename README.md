@@ -29,6 +29,10 @@ Once ready publish the service as 'Public' so it can be used. (This action is cu
 
 This project now need to be adapted for the 3rd party connectivity needs.
 
+Before getting started: to be compatible with IoT connector (PDaaS) for a later integration follow:
+- Use the `c2c` namespacing for Modules, Endpoints, Assets and any stored items to avoid potential naming conflict
+- Avoid adding code in eventhandlers as it will make the merging harder, instead put your code in Modules
+
 1. Clone this repository
 
 2. Update this project with the newly created service.
@@ -39,7 +43,7 @@ Don't forget to rename the files ./service/<CloudServiceName>.yaml too.
 
 3. Modify the callback authentication logic
 
-This sample assumes a single callback endpoint for each event defined in ./endpoints/callbacks.lua & ./modules/authentication.lua .
+This sample assumes a single callback endpoint for each event defined in ./endpoints/c2c/callbacks.lua & ./modules/c2c/authentication.lua .
 We use a token generated at solution bootstrap & passed as query parameter to authenticate the 3rd party.
 Other authentication system can be defined there.
 
@@ -47,16 +51,17 @@ Other authentication system can be defined there.
 
 2 modules are used for data mapping with the 3rd service.
 
-./modules/cloud2murano.lua for incoming messages.
+./modules/c2c/cloud2murano.lua for incoming messages.
 This files parse & dispatches the data coming from the 3rd party to Murano device state service and to the applications.
 You need to modify this file to match the 3rd party events for device provisioning, deletion and incoming sensor data.
 
-./modules/murano2cloud.lua for outgoing messages.
+./modules/c2c/murano2cloud.lua for outgoing messages.
 The payload structure needed in this files depends on the the swagger definition of the service.
 
 [5. Modify pooling logic]
 
-If the 3rd party requires a regular pooling syncronisation, that logic needs to be set in the ./services/timer_timer.lua eventhandler.
+If the 3rd party requires a regular pooling syncronisation, you need to enable the internal in the ./services/timer.yaml config.
+The default logic set in the ./services/timer_timer.lua eventhandler will use the same structure as for callbacks.
 
 ##### Publish the 3rd party integration template to Murano
 
@@ -79,7 +84,7 @@ You can also provide some tooling for the template user to extend your integrati
 While you want to be able to provide new version of your template you need to avoid erasing some of the template user changes.
 For this purpose we defines a `safeNamespace` for the user (in ./murano.yaml) every items (modules, endpoints & assets) start with this name will not be remove nor modified by template updates.
 
-User can then safely modify the ./modules/vendor/transform.lua to change the data mapping or even add new public APIs (under `/vendor/*`) to extend the product capability.
+User can then safely modify the ./modules/vendor/c2c/transform.lua to change the data mapping or even add new public APIs (under `/vendor/*`) to extend the product capability.
 
 If the user don't want to get update, automated updates can be deactivated on the Product `Services -> Config` settings.
 
@@ -94,8 +99,22 @@ In order to be utilized from exosense the 'data_in' content structure, named cha
 The device2 data structure set in ./services/device2.yaml is already Exosense compatible.
 However template user needs to update the product ./modules/vendor/configIO.lua Module and updates the data structure specific to the product.
 
+##### Murano IoT Connector (PDaaS) integration
+
+This template can be extended as an IoT Connector (PDaaS) to provide & publish product instance to multiple internal and external applications.
+
+Assuming you have a workable 3rd party cloud integrated and followed the above `setup` section.
+- Create a new branch or repo to keep the stand-alone version
+- Clone the Iot Connector (https://github.com/exosite/pdaas_template) repository
+- Merge Modules, Assets & endpoints: Different namespaces are used and you should be able to copy all modules files into your project modules.
+- Merge Services: Overlapping service configuration & eventhandlers needs to be merged manually, luckily the logic is trivial
+- Merge init.lua & murano.yaml: No changes from PDaaS should be required, however you need to enable the 'Assets' options
+- Push your changes to the PDaaS-Cloud2Cloud product branch
+- Publish the new template to Murano Exchange as described above
+
 ### Known limitations
 
 - As external service don't have an event API, current version requires the webservice to add custom routes for callback. (MUR-9171)
 - If the 3rd party api requires signature header, the signature management needs to be done in Lua.
 - Device2 service doesn't support batch functionality yet.
+- Exosense `config_io` is fixed (in ./modules/vendor/configIO.lua) and cannot be modified per device.

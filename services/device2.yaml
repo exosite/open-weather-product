@@ -9,6 +9,7 @@ resources:
     allowed: []
     format: string
     settable: true
+    sync: false
     unit: ''
   data_in:
     allowed: []

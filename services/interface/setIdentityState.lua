@@ -1,11 +1,7 @@
 operation.solution_id = nil
-operation.config_io = nil -- ready only as set in vendor.configIO
+-- If config_io is hardcoded dont allow user updates
+if require("vendor.configIO") then
+  operation.config_io = nil
+end
 
-local result = Device2.setIdentityState(operation)
-
-local identity = operation.identity
-operation.identity = nil
-
-require("murano2cloud").setIdentityState(identity, operation)
-
-return result
+return Device2.setIdentityState(operation)

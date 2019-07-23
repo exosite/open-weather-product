@@ -1,3 +1,3 @@
 
 -- Generate callbackUrl
-require("authentication").setToken()
+require("c2c.authentication").setToken()

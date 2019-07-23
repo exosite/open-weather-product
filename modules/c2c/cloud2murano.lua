@@ -2,19 +2,24 @@ local cloud2murano = {}
 -- This module authenticates the 3rd party cloud callback requests
 -- To be updated depending on the security requirements
 
-local cloudServiceName = require("murano2cloud").alias
+local cloudServiceName = require("c2c.murano2cloud").alias
+local transform = require("vendor.c2c.transform")
 
 -- Propagate event to Murano applications
 function cloud2murano.trigger(identity, event_type, payload, options)
     local event = {
       ip = options.ip,
+      type = event_type,
       identity = identity,
       protocol = cloudServiceName,
       timestamp = options.timestamp or os.time(os.date("!*t")),
       connection_id = options.request_id or context.tracking_id,
       payload = payload
     }
-    Interface.trigger({event = "event", data = event})
+
+    if handle_device2_event then
+      handle_device2_event(event)
+    end
 end
 
 function cloud2murano.provisioned(identity, data, options)

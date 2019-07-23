@@ -18,10 +18,10 @@ endpoints:
   exclude: ['*_test.lua', '*_spec.lua']
 
 # assets:
-#   location: files
+#   location: assets
 #   include: '**/*'
 #   exclude: []
-#   default_page: docs # This only works for assets not for any other endpoints
+#   default_page: index # This only works for assets not for any other endpoints
 
 modules:
   location: modules
