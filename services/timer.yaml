@@ -1,4 +1,4 @@
 
 # Un-comment if a pool period is needed
 # daily: true
-# hourly: true
+hourly: true

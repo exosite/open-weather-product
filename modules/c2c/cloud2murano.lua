@@ -2,7 +2,9 @@ local cloud2murano = {}
 -- This module authenticates the 3rd party cloud callback requests
 -- To be updated depending on the security requirements
 
-local cloudServiceName = require("c2c.murano2cloud").alias
+local cache = require("c2c.vmcache")
+local murano2cloud = require("c2c.murano2cloud")
+local cloudServiceName = murano2cloud.alias
 local transform = require("vendor.c2c.transform")
 
 -- Propagate event to Murano applications
@@ -34,6 +36,11 @@ end
 
 function cloud2murano.data_in(identity, data, options)
   data = transform.data_in(data) -- template user customized data transforms
+
+  if type(data) ~= "string" then
+    data = to_json(data)
+  end
+
   result = Device2.setIdentityState({
     identity = identity,
     data_in = data
@@ -43,14 +50,13 @@ function cloud2murano.data_in(identity, data, options)
     cloud2murano.provisioned(identity, nil, options)
   end
 
-  local payload = {{
+  local payload = {{ -- a list
     values = {
       data_in = data
     },
     timestamp = (options.timestamp or os.time(os.date("!*t")))
   }}
 
-  event.updated_resources = {"data_in"} -- not sure if needed?
   cloud2murano.trigger(identity, "data_in", payload, options)
 end
 
@@ -73,14 +79,21 @@ function cloud2murano.sync(data, options)
   end
 end
 
-function cloud2murano.syncAll()
-  local results = require('murano2cloud').sync()
-  if results.error then
-    return log.error(results.error)
+function getIdentities()
+  local identities = {}
+  for i, device in pairs(Device2.listIdentities().devices) do
+    table.insert(identities, device.identity)
   end
-  for i, result in ipairs(results) do
-    if result.device_id then
-      cloud2murano.data_in(result.device_id, result.data, {})
+  return identities
+end
+
+function cloud2murano.syncAll()
+  local identities = cache("identities", getIdentities)
+
+  for i, identity in pairs(identities) do
+    local result = murano2cloud.sync(identity)
+    if result then
+      cloud2murano.data_in(identity, result, {})
     end
   end
 end

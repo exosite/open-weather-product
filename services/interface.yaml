@@ -1,0 +1,7 @@
+parameters:
+  - name: cities
+    type: array
+    description: List of cities
+    items:
+      type: string
+      description: City name

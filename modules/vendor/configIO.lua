@@ -4,16 +4,31 @@
 --
 -- This file is in the 'vendor' safeNamespace and changes will persists upon template updates
 
-
 local config_io = [[
  {
   "channels": {
-    "005": {
-      "display_name": "Machine Status",
-      "description": "Device reported status",
+    "humidity": {
+      "display_name": "Humidity",
+      "description": "Humidity",
       "properties": {
-        "data_type": "STRING",
-        "primitive_type": "STRING"
+        "data_type": "HUMIDITY",
+        "data_unit": "PERCENT"
+      }
+    },
+    "pressure": {
+      "display_name": "Pressure",
+      "description": "Pressure",
+      "properties": {
+        "data_type": "PRESSURE",
+        "data_unit": "ATMOSPHERE"
+      }
+    },
+    "temp": {
+      "display_name": "Temperature",
+      "description": "Temperature",
+      "properties": {
+        "data_type": "TEMPERATURE",
+        "data_unit": "K"
       }
     }
   }

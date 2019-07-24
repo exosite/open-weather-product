@@ -1,27 +1,17 @@
 ---
-# The format version of this file. This is required.
 formatversion: 1.0.0
 
 info:
-  name: Cloud to Murano Product
-  description: Template example for integrating 3rd party could to Murano Products
+  name: OpenWeatherApi
+  description: |
+    Open Weather API integration as a Murano Product.
+    Each configured cities will behave as a device emitting weather data
   authors:
     - 'exosite'
   version: 0.1.0
 
 options:
   safeNamespace: vendor
-
-endpoints:
-  location: endpoints
-  include: '**/*.lua'
-  exclude: ['*_test.lua', '*_spec.lua']
-
-# assets:
-#   location: assets
-#   include: '**/*'
-#   exclude: []
-#   default_page: index # This only works for assets not for any other endpoints
 
 modules:
   location: modules

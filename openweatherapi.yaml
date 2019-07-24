@@ -1,0 +1,51 @@
+swagger: "2.0"
+
+info:
+  version: "1.0"
+  title: Open Weather API
+  description: |
+              Get current weather, daily forecast for 16 days, and 3-hourly forecast 5 days for your city.
+              Helpful stats, graphics, and this day in history charts are available for your reference.
+              Interactive maps show precipitation, clouds, pressure, wind around your location.
+  contact:
+    name: Exosite
+    email: support@exosite.com
+
+host: api.openweathermap.org
+basePath: "/data/2.5"
+
+x-exosite-config-parameters:
+  - name: appid
+    description: The api id token to authenticate the application
+    type: string
+
+paths:
+  /weather:
+    get:
+      description: Get weather data
+      operationId: getWeather
+      parameters:
+        - name: appid
+          in: query
+          description: Application token
+          type: string
+          required: true
+        - name: q
+          in: query
+          description: Query. Example city name
+          type: string
+        - name: id
+          in: query
+          description: Query by city Id
+          type: string
+        - name: long
+          in: query
+          description: Query by longitude
+          type: string
+        - name: lat
+          in: query
+          description: Query by latitude
+          type: string
+      responses:
+        default:
+          description: Response value
