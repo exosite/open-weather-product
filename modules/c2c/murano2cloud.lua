@@ -14,7 +14,7 @@ function murano2cloud.removeIdentity(identity)
   return murano.services[murano2cloud.alias].removeIdentity({ identity = identity })
 end
 
-function murano2cloud.setIdentitystate(identity, data)
+function murano2cloud.setIdentityState(identity, data)
   data = transform.data_out(data) -- template user customized data transforms
   return murano.services[murano2cloud.alias].setIdentitystate({ identity = identity, data = data })
 end
