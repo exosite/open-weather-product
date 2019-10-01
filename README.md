@@ -1,7 +1,7 @@
 
-# OpenWeather Murano Product
+# OpenWeather Murano Connector
 
-This project is simplistic Murano Product template integrating to the OpenWeather API based on the
+This project is Murano Connector template integrating the [OpenWeather API](https://openweathermap.org/) based on the
 https://github.com/exosite/getting-started-solution-template/tree/cloud2cloud-product template.
 
 Application adding this product can configure the list of cities to report their weather values.
@@ -17,9 +17,9 @@ More info on http://docs.exosite.com/reference/ui/exchange/authoring-elements-gu
 
 ### Using this template
 
-- On Exosite Iot Marketplace select this template and create a product solution.
-- Go to the new product management under Services->OpenWeather and enter your credentials.
-- Go to your application solution page under Services->Product Setup & 'Add product'
-- Select the newly created product & apply
-- Go to the product configuration tab and add the city you with to get weather from.
-- You should get the weather
+1. Select this template and create an IoT-Connector solution.
+1. Go to the new IoT-Connector management page under `Services->OpenWeather` and enter your OpenWeather credentials.
+1. Add the new IoT-Connector and add it to you application
+1. Go to your application solution page under Services->Product Setup
+1. Select the newly created Connector and add the city you with to get weather from.
+1. You should get the weather as data coming from a Device named after the specified city
