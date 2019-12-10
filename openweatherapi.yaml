@@ -7,6 +7,8 @@ info:
               Get current weather, daily forecast for 16 days, and 3-hourly forecast 5 days for your city.
               Helpful stats, graphics, and this day in history charts are available for your reference.
               Interactive maps show precipitation, clouds, pressure, wind around your location.
+              
+              Get your account and all information from https://openweathermap.org
   contact:
     name: Exosite
     email: support@exosite.com
@@ -16,7 +18,8 @@ basePath: "/data/2.5"
 
 x-exosite-config-parameters:
   - name: appid
-    description: The api id token to authenticate the application
+    title: API Key
+    description: The API Key, provided from the OpenWeatherMap account
     type: string
 
 paths:
