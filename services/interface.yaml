@@ -1,8 +1,8 @@
 
-name: Open Weather Map Connector
+name: OpenWeather Connector
 
 description: |
-  Openweathermap.org Cloud-Connector providing weather data to your application.
+  http://openweathermap.org Cloud-Connector providing weather data to your application.
   To add a new location, add a device using. `addIdentity({ identity = identity })`.
 
   The `identity` support the following formats:
