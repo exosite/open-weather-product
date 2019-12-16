@@ -13,6 +13,8 @@ info:
 
 options:
   safeNamespace: vendor
+  safeConfigs:
+    - interface
 
 env_schema:
   description: |
