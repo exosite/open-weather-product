@@ -1,4 +1,3 @@
-operation.solution_id = nil
 local identities = Device2.listIdentities(operation)
 if identities.code ~= nil then
   return identities

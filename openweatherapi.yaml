@@ -4,10 +4,7 @@ info:
   version: "1.0"
   title: Open Weather API
   description: |
-              Get current weather, daily forecast for 16 days, and 3-hourly forecast 5 days for your city.
-              Helpful stats, graphics, and this day in history charts are available for your reference.
-              Interactive maps show precipitation, clouds, pressure, wind around your location.
-              
+              Get current weather for any cities in the world.
               Get your account and all information from https://openweathermap.org
   contact:
     name: Exosite
@@ -15,12 +12,48 @@ info:
 
 host: api.openweathermap.org
 basePath: "/data/2.5"
-
+x-exosite-health-path: "/"
 x-exosite-config-parameters:
   - name: appid
     title: API Key
     description: The API Key, provided from the OpenWeatherMap account
     type: string
+    required: true
+  - name: lang
+    title: Language
+    description: Default language
+    type: string
+    pattern: "[a-z]+(_[a-z]+)?"
+  - name: units
+    title: Units
+    description: Default units type to return
+    type: string
+    default: metric
+    enum:
+      - imperial
+      - metric
+
+parameters:
+  Appid:
+    name: appid
+    in: query
+    description: Application token
+    type: string
+    required: true
+  Units:
+    name: units
+    in: query
+    description: Units type to return
+    type: string
+    enum:
+      - imperial
+      - metric
+  Lang:
+    name: lang
+    in: query
+    description: Language support
+    type: string
+    pattern: "[a-z]+(_[a-z]+)?"
 
 paths:
   /weather:
@@ -28,11 +61,6 @@ paths:
       description: Get weather data
       operationId: getWeather
       parameters:
-        - name: appid
-          in: query
-          description: Application token
-          type: string
-          required: true
         - name: q
           in: query
           description: Query. Example city name
@@ -41,14 +69,60 @@ paths:
           in: query
           description: Query by city Id
           type: string
-        - name: long
+        - name: lon
           in: query
           description: Query by longitude
-          type: string
+          type: number
         - name: lat
           in: query
           description: Query by latitude
+          type: number
+        - name: zip
+          in: query
           type: string
+          description: Query by ZIP code. Format is `{zip code},{country code}`
+          pattern: "[a-zA-Z0-9.]+(,[A-Z]+)?"
+        - $ref: '#/parameters/Units'
+        - $ref: '#/parameters/Lang'
+        - $ref: '#/parameters/Appid'
       responses:
         default:
-          description: Response value
+          description: Location weather, find details on https://openweathermap.org/current
+          schema:
+            type: object
+            description: Location weather, find details on https://openweathermap.org/current
+
+  /group:
+    get:
+      description: Get bulk weather data
+      operationId: getBulkWeather
+      parameters:
+        - name: id
+          in: query
+          description: List of location ids
+          type: array
+          required: true
+          maxItems: 20
+          items:
+            type: integer
+            description: Location Id
+          collectionFormat: csv
+        - $ref: '#/parameters/Units'
+        - $ref: '#/parameters/Lang'
+        - $ref: '#/parameters/Appid'
+      responses:
+        default:
+          description: Bulk request response
+          schema:
+            type: object
+            description: Bulk request response
+            properties:
+              cnt:
+                description: Number of location returned
+                type: integer
+              list:
+                description: List of location weather
+                type: array
+                items:
+                  description: Location weather, find details on https://openweathermap.org/current
+                  type: object

@@ -1,5 +1,3 @@
-operation.solution_id = nil
-
 local identityState = Device2.getIdentityState(operation)
 if identityState.code ~= nil then
   return identityState
