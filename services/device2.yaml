@@ -32,3 +32,8 @@ tags_schema:
       description: The original query made by the user when adding a location.
       readyOnly: true
       type: string
+    error:
+      title: Error
+      description: The OpenWeather error if failed to convert the Identity query
+      readyOnly: true
+      type: string

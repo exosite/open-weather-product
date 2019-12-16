@@ -83,7 +83,19 @@ end
 function cloud2murano.initDevice(identity)
   -- Get cloud data
   local location = murano2cloud.query(identity)
-  if location and location.error then return location end
+  if not location then return nil
+  elseif location.status == 404 then
+    Device2.addIdentityTag({
+     identity = identity,
+     replace = true,
+     tags = {{
+       name = "error",
+       value = location.error
+     }}
+   })
+  elseif location.error then
+    return location
+  end
 
   -- Create identity from remote cloud name
   local r = cloud2murano.provisioned(location, { query = identity })
