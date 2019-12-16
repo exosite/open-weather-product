@@ -9,27 +9,30 @@ function transform.data_in(cloud_data)
   -- Find the details of OpenWeatherMap data in https://openweathermap.org/current
 
   -- NOTE: if you change this file you should reflect the structure to the `vendor.configIO` module.
-  local data = cloud_data.main
+  local data_in = cloud_data.main
   if cloud_data.wind then
-    data.wind_speed = cloud_data.wind.speed
-    data.wind_deg = cloud_data.wind.deg
+    data_in.wind_speed = cloud_data.wind.speed
+    data_in.wind_deg = cloud_data.wind.deg
   end
   if cloud_data.coord then
-    data.gps = {
+    data_in.gps = {
       lat = data.coord.lat,
       lng = data.coord.lon -- match Exosense Format
     }
   end
   if cloud_data.clouds then
-    data.clouds = cloud_data.clouds.all
+    data_in.clouds = cloud_data.clouds.all
   end
   if cloud_data.rain then
-    data.rain = cloud_data.rain["1h"]
+    data_in.rain = cloud_data.rain["1h"]
   end
   if cloud_data.snow then
-    data.show = cloud_data.show["1h"]
+    data_in.show = cloud_data.show["1h"]
   end
-  return data
+  -- Here we comply to ExoSense data structure
+  return { data_in = data_in }
+  -- For ExoHome or other app use:
+  -- return data_in
 end
 
 return transform

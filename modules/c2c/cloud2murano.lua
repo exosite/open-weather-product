@@ -51,12 +51,15 @@ end
 function cloud2murano.data_in(location, options)
   if not options then options = {} end
   local data = transform.data_in(location) -- template user customized data transforms
-  if type(data) ~= "string" then data = to_json(data) end
+  if type(data) ~= table then return end
 
-  local r = Device2.setIdentityState({
-    identity = location.name,
-    data_in = data
-  })
+  for k, v in pairs(data) do
+    local t = type(v)
+    if t ~= "string" and t ~= "number" and t ~= "boolean" then data[k] = to_json(v) end
+  end
+
+  data.identity = location.name
+  local r = Device2.setIdentityState(data)
   if r and r.status == 404 then
     -- Auto register device on data in
     r = cloud2murano.provisioned(location, options)
