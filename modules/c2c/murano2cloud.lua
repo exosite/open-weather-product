@@ -21,7 +21,7 @@ function murano2cloud.sync(query)
   if result.error then
     log.error(result.error)
   else
-    return result.main
+    return result
   end
 end
 

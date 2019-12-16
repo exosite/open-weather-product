@@ -6,6 +6,7 @@ local cache = require("c2c.vmcache")
 local murano2cloud = require("c2c.murano2cloud")
 local cloudServiceName = murano2cloud.alias
 local transform = require("vendor.c2c.transform")
+local mcrypto = require("staging.mcrypto")
 
 -- Propagate event to Murano applications
 function cloud2murano.trigger(identity, event_type, payload, options)
@@ -25,7 +26,8 @@ function cloud2murano.trigger(identity, event_type, payload, options)
 end
 
 function cloud2murano.provisioned(identity, data, options)
-  Device2.addIdentity({ identity = identity })
+  local key = mcrypto.b64url_encode(mcrypto.rand_bytes(20))
+  Device2.addIdentity({ identity = identity, auth = { key = key, type = "password" } })
   cloud2murano.trigger(identity, "provisioned", nil, options)
 end
 
@@ -88,12 +90,16 @@ function getIdentities()
 end
 
 function cloud2murano.syncAll()
-  local identities = cache("identities", getIdentities)
+  local result = murano2cloud.sync(nil)
+  if result then
+    cloud2murano.data_in(result.name, result.main, {})
+  end
 
+  local identities = cache("identities", getIdentities)
   for i, identity in pairs(identities) do
-    local result = murano2cloud.sync(identity)
+    result = murano2cloud.sync(identity)
     if result then
-      cloud2murano.data_in(identity, result, {})
+      cloud2murano.data_in(result.name, result.main, {})
     end
   end
 end
