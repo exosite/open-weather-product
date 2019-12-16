@@ -86,13 +86,14 @@ function cloud2murano.initDevice(identity)
   if not location then return nil
   elseif location.status == 404 then
     Device2.addIdentityTag({
-     identity = identity,
-     replace = true,
-     tags = {{
-       name = "error",
-       value = location.error
-     }}
-   })
+      identity = identity,
+      replace = true,
+      tags = {{
+        name = "error",
+        value = location.error
+      }}
+    })
+    return location
   elseif location.error then
     return location
   end
@@ -129,8 +130,8 @@ function cloud2murano.syncAll()
       table.insert(ids, id)
     else
       -- Un-processed entry, init it
-      local r = cloud2murano.initDevice(device.identity)
-      if r and r.error then return r end
+      cloud2murano.initDevice(device.identity)
+      -- No error handling as error for a given query is reflected on the tags
     end
   end
 
