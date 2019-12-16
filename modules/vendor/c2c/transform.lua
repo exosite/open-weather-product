@@ -10,23 +10,23 @@ function transform.data_in(cloud_data)
 
   -- NOTE: if you change this file you should reflect the structure to the `vendor.configIO` module.
   local data = cloud_data.main
-  if data.wind then
+  if cloud_data.wind then
     data.wind_speed = cloud_data.wind.speed
     data.wind_deg = cloud_data.wind.deg
   end
-  if data.coord then
+  if cloud_data.coord then
     data.gps = {
       lat = data.coord.lat,
       lng = data.coord.lon -- match Exosense Format
     }
   end
-  if data.clouds then
+  if cloud_data.clouds then
     data.clouds = cloud_data.clouds.all
   end
-  if data.rain then
+  if cloud_data.rain then
     data.rain = cloud_data.rain["1h"]
   end
-  if data.snow then
+  if cloud_data.snow then
     data.show = cloud_data.show["1h"]
   end
   return data
