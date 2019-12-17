@@ -91,7 +91,7 @@ function cloud2murano.initDevice(identity)
   -- Get cloud data
   local location = murano2cloud.query(identity)
   if not location then return nil
-  elseif 400 <= location.status and location.status < 500 then
+  elseif location.status and 400 <= location.status and location.status < 500 then
     Device2.addIdentityTag({
       identity = identity,
       replace = true,
