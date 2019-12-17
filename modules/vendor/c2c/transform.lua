@@ -16,8 +16,8 @@ function transform.data_in(cloud_data)
   end
   if cloud_data.coord then
     data_in.gps = {
-      lat = data.coord.lat,
-      lng = data.coord.lon -- match Exosense Format
+      lat = cloud_data.coord.lat,
+      lng = cloud_data.coord.lon -- match Exosense Format
     }
   end
   if cloud_data.clouds then
