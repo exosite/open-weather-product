@@ -84,7 +84,7 @@ function cloud2murano.initDevice(identity)
   -- Get cloud data
   local location = murano2cloud.query(identity)
   if not location then return nil
-  elseif location.status == 404 then
+  elseif 400 <= location.status and location.status < 500 then
     Device2.addIdentityTag({
       identity = identity,
       replace = true,
@@ -112,9 +112,9 @@ function cloud2murano.initDevice(identity)
   end
 end
 
-local function getIDTag(device)
+local function getTag(name, device)
   for i, tag in ipairs(device.tags) do
-    if tag.name == "id" then return tag.value end
+    if tag.name == name then return tag.value end
   end
 end
 
@@ -124,11 +124,11 @@ function cloud2murano.syncAll()
   local identities = Device2.listIdentities()
   if identities.error then return identities end
   for i, device in ipairs(identities.devices) do
-    local id = getIDTag(device)
+    local id = getTag("id", device)
     if id then
       -- Processed entry
       table.insert(ids, id)
-    else
+    elseif not getTag("error", device) then
       -- Un-processed entry, init it
       cloud2murano.initDevice(device.identity)
       -- No error handling as error for a given query is reflected on the tags
