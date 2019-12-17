@@ -44,6 +44,13 @@ function cloud2murano.provisioned(location, options)
   })
   if r and r.error then return r end
 
+  -- Add config_io base value
+  r = Device2.setIdentityState({
+    identity = location.name,
+    config_io = "<<Config IO is defined globally in the `vendor.configIO` module.>>"
+  })
+  if r and r.error then return r end
+
   -- Emit event
   return cloud2murano.trigger(location.name, "provisioned", nil, options)
 end
