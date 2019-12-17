@@ -1,4 +1,4 @@
-
+# Following 2 settings Should be able to be removed once MUR-10745 released
 protocol:
   name: "onep:v1/http"
 provisioning:
@@ -17,9 +17,23 @@ resources:
     settable: true
     sync: false
     unit: ''
-  data_out:
-    allowed: []
-    format: string
-    settable: true
-    sync: false
-    unit: ''
+
+tags_schema:
+  description: Associated metadata used by the OpenWeatherMap connector.
+  type: object
+  properties:
+    id:
+      title: Location Id
+      description: The OpenWeatherMap unique location ID.
+      readyOnly: true
+      type: string
+    query:
+      title: Query
+      description: The original query made by the user when adding a location.
+      readyOnly: true
+      type: string
+    error:
+      title: Error
+      description: The OpenWeather error if failed to convert the Identity query
+      readyOnly: true
+      type: string

@@ -4,25 +4,48 @@ local murano2cloud = {}
 
 murano2cloud.alias = "openweatherapi"
 
-function murano2cloud.addIdentity(identity)
+local function getQuery(identity)
+  local lon, lat = string.match(identity, '([0-9.]+),([0-9.]+)')
+  if lon and lat then return { lon = lon, lat = lat } end
+  local zip = string.match(identity, '([a-zA-Z0-9.]+,[a-zA-Z-]+)')
+  if zip then return { zip = zip } end
+  return { q = identity }
 end
 
-function murano2cloud.removeIdentity(identity)
+-- Fetch from query
+function murano2cloud.query(q)
+  -- Use the new device identity to fetch the remote data
+  local query = getQuery(q)
+  return murano.services[murano2cloud.alias].getWeather(query)
 end
 
-function murano2cloud.setIdentityState(identity, data)
-end
-
--- Function for recurrent poll action
-function murano2cloud.sync(query)
-  local result = murano.services[murano2cloud.alias].getWeather({
-    q = query
-  })
-  if result.error then
-    log.error(result.error)
+local function flush(ids, acc)
+  if not ids or not ids[1] then return acc end
+  local r = murano.services[murano2cloud.alias].getBulkWeather({ id = ids })
+  if r and r.error then return r end
+  if not acc then
+    acc = r.list
   else
-    return result
+    for i, location in ipairs(r.list) do
+      table.insert(acc, location)
+    end
   end
+  return acc
+end
+
+-- Bulk fetch from Ids
+function murano2cloud.getAll(ids)
+  local chunk = {}
+  local acc = {}
+  for i, id in ipairs(ids) do
+    table.insert(chunk, id)
+    if i % 20 == 0 then
+      acc = flush(chunk, acc)
+      if acc.error then return acc end
+      chunk = {}
+    end
+  end
+  return flush(chunk, acc)
 end
 
 return murano2cloud

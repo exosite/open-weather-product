@@ -1,7 +1,11 @@
-parameters:
-  - name: cities
-    type: array
-    description: List of cities
-    items:
-      type: string
-      description: City name
+
+name: OpenWeather Connector
+
+description: |
+  http://openweathermap.org Cloud-Connector providing weather data to your application.
+  To add a new location, add a device using. `addIdentity({ identity = identity })`.
+
+  The `identity` support the following formats:
+  - `<zip code>,<COUNTRY-CODE>` eg. `20455,TW`
+  - `<longitude>,<latitude>` eg. `12.4,32.1`
+  - `<City name>` eg. `Taipei`

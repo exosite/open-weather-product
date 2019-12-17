@@ -4,14 +4,30 @@ formatversion: 1.0.0
 info:
   name: OpenWeatherApi
   description: |
-    Open Weather API integration as a Murano Product.
-    Each configured cities will behave as a device emitting weather data
+    Open Weather API integration as a Murano IoT-Connector.
+    To add a weather location, add a device with matching identity id.
+    Each configured locations will behave as a device emitting weather data every hours.
   authors:
     - 'exosite'
-  version: 0.1.0
+  version: 1.0.0
 
 options:
   safeNamespace: vendor
+  safeConfigs:
+    - interface
+
+env_schema:
+  description: |
+    To add a weather location, add a device with matching identity id under the `Devices` panel.
+    You can provide the location as one of the following:
+      - `<zip code>,<COUNTRY-CODE>` eg. `20455,TW`
+      - `<longitude>,<latitude>` eg. `12.4,32.1`
+      - `<City name>` eg. `Taipei`
+    Each configured locations will behave as a device emitting weather data every hours.
+    You can force the update by going to the `Services -> Openweatherapi` and clicking `Apply` (no need of changing any value).
+
+    You can modify the incoming payload data by updating the `vendor.c2c.transform` module.
+    NOTE: for ExoSense compatibility, you should then also change the `vendor.c2c.transform` accordingly.
 
 modules:
   location: modules
@@ -22,5 +38,3 @@ services:
   location: services
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
-
-init_script: init.lua

@@ -1,10 +1,9 @@
-
 # OpenWeather Murano Connector
 
 This project is Murano Connector template integrating the [OpenWeather API](https://openweathermap.org/) based on the
 https://github.com/exosite/getting-started-solution-template/tree/cloud2cloud-product template.
 
-Application adding this product can configure the list of cities to report their weather values.
+Application adding this product can configure the list of zipcodes, GPS coordinates and cities as dummy devices to report their weather values.
 Every hours the weather values are updated and reported to the application as devices would.
 
 ### Publish this template
@@ -17,9 +16,17 @@ More info on http://docs.exosite.com/reference/ui/exchange/authoring-elements-gu
 
 ### Using this template
 
-1. Select this template and create an IoT-Connector solution.
-1. Go to the new IoT-Connector management page under `Services->OpenWeather` and enter your OpenWeather credentials.
-1. Add the new IoT-Connector and add it to you application
-1. Go to your application solution page under Services->Product Setup
-1. Select the newly created Connector and add the city you with to get weather from.
-1. You should get the weather as data coming from a Device named after the specified city
+1. Select this template and create a new IoT-Connector.
+1. Go to the new IoT-Connector management page under `Services -> Openweatherapi` and enter your OpenWeatherMap credentials Key.
+
+To set locations:
+
+1. Navigate to the Connector management page under the `Devices` panel.
+1. Create a new device and input the location as Identity.
+
+You can provide the location as one of the following:
+  - `<zip code>,<COUNTRY-CODE>` eg. `20455,TW`
+  - `<longitude>,<latitude>` eg. `12.4,32.1`
+  - `<City name>` eg. `Taipei`
+
+Each configured locations will behave as a device emitting weather data every hours. You can force the update by going to the `Services -> Openweatherapi` and clicking `Apply` (no need of changing any value).
