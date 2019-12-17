@@ -47,7 +47,7 @@ function cloud2murano.provisioned(location, options)
   -- Add config_io base value
   r = Device2.setIdentityState({
     identity = location.name,
-    config_io = "<<Config IO is defined globally in the `vendor.configIO` module.>>"
+    config_io = "<<Config IO is defined globally in the module `vendor.configIO`.>>"
   })
   if r and r.error then return r end
 
