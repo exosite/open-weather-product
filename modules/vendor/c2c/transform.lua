@@ -27,7 +27,7 @@ function transform.data_in(cloud_data)
     data_in.rain = cloud_data.rain["1h"]
   end
   if cloud_data.snow then
-    data_in.show = cloud_data.show["1h"]
+    data_in.snow = cloud_data.snow["1h"]
   end
   -- Here we comply to ExoSense data structure
   return { data_in = data_in }
