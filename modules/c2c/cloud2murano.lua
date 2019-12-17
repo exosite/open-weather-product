@@ -26,6 +26,7 @@ function cloud2murano.trigger(identity, event_type, payload, tags, options)
 end
 
 function cloud2murano.provisioned(location, options)
+  setName(location)
   if not options then options = {} end
   local key = mcrypto.b64url_encode(mcrypto.rand_bytes(20))
   local r = Device2.addIdentity({ identity = location.name, auth = { key = key, type = "password" } })
@@ -87,6 +88,15 @@ function cloud2murano.data_in(location, options)
   return cloud2murano.trigger(identity, "data_in", payload, options)
 end
 
+local function setName(location)
+  if location.name and #(location.name) > 2 then return location.name end
+  if location.coord and location.coord.lon and location.coord.lat then
+    location.name = location.coord.lon .. "," .. location.coord.lat
+  end
+  location.name = location.id
+  return location.name;
+end
+
 function cloud2murano.initDevice(identity)
   -- Get cloud data
   local location = murano2cloud.query(identity)
@@ -104,6 +114,8 @@ function cloud2murano.initDevice(identity)
   elseif location.error then
     return location
   end
+
+  setName(location)
 
   -- Create identity from remote cloud name
   local r = cloud2murano.provisioned(location, { query = identity })

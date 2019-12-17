@@ -5,9 +5,9 @@ local murano2cloud = {}
 murano2cloud.alias = "openweatherapi"
 
 local function getQuery(identity)
-  local lon, lat = string.match(identity, '^([0-9.]+),([0-9.]+)$')
+  local lon, lat = string.match(identity, '([0-9.]+),([0-9.]+)')
   if lon and lat then return { lon = lon, lat = lat } end
-  local zip = string.match(identity, '^([a-zA-Z0-9.]+,[a-zA-Z]+)$')
+  local zip = string.match(identity, '([a-zA-Z0-9.]+,[a-zA-Z-]+)')
   if zip then return { zip = zip } end
   return { q = identity }
 end
