@@ -6,6 +6,16 @@ local cloudServiceName = murano2cloud.alias
 local transform = require("vendor.c2c.transform")
 local mcrypto = require("staging.mcrypto")
 
+-- Generate the name if missing
+local function setName(location)
+  if location.name and #(location.name) > 2 then return location.name end
+  if location.coord and location.coord.lon and location.coord.lat then
+    location.name = location.coord.lon .. "," .. location.coord.lat
+  end
+  location.name = location.id
+  return location.name;
+end
+
 -- Propagate event to Murano applications
 function cloud2murano.trigger(identity, event_type, payload, tags, options)
   if not options then options = {} end
@@ -86,15 +96,6 @@ function cloud2murano.data_in(location, options)
     timestamp = (options.timestamp or os.time(os.date("!*t")))
   }}
   return cloud2murano.trigger(identity, "data_in", payload, options)
-end
-
-local function setName(location)
-  if location.name and #(location.name) > 2 then return location.name end
-  if location.coord and location.coord.lon and location.coord.lat then
-    location.name = location.coord.lon .. "," .. location.coord.lat
-  end
-  location.name = location.id
-  return location.name;
 end
 
 function cloud2murano.initDevice(identity)
