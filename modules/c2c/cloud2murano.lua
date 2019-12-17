@@ -51,7 +51,7 @@ end
 function cloud2murano.data_in(location, options)
   if not options then options = {} end
   local data = transform.data_in(location) -- template user customized data transforms
-  if type(data) ~= table then return end
+  if type(data) ~= "table" then return end
 
   for k, v in pairs(data) do
     local t = type(v)
