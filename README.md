@@ -3,7 +3,7 @@
 This project is Murano Connector template integrating the [OpenWeather API](https://openweathermap.org/) based on the
 https://github.com/exosite/getting-started-solution-template/tree/cloud2cloud-product template.
 
-Application adding this product can configure the list of cities to report their weather values.
+Application adding this product can configure the list of zipcodes, GPS coordinates and cities to report their weather values.
 Every hours the weather values are updated and reported to the application as devices would.
 
 ### Publish this template
