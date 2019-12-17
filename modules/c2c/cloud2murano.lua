@@ -41,7 +41,13 @@ function cloud2murano.provisioned(location, options)
   if not options then options = {} end
   local key = mcrypto.b64url_encode(mcrypto.rand_bytes(20))
   local r = Device2.addIdentity({ identity = location.name, auth = { key = key, type = "password" } })
-  if r and r.error and r.status ~= 409 then return r end
+  if r and r.error then
+    if r.status == 409 then
+      r = Device2.updateIdentity({ identity = location.name, auth = { key = key, type = "password" } })
+      if r and r.error then return r end
+    else return r end
+  end
+
   -- Add Fixed tags
   r = Device2.addIdentityTag({
     identity = location.name,
