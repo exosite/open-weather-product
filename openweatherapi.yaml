@@ -23,6 +23,7 @@ x-exosite-config-parameters:
     title: Language
     description: Default language
     type: string
+    default: en
     pattern: "[a-zA-Z]+(_[a-zA-Z]+)?"
   - name: units
     title: Units
