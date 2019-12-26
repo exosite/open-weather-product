@@ -97,12 +97,10 @@ function cloud2murano.data_in(location, options)
   end
 
   local payload = {{ -- a list
-    values = {
-      data_in = data
-    },
+    values = data,
     timestamp = (options.timestamp or os.time(os.date("!*t")))
   }}
-  return cloud2murano.trigger(identity, "data_in", payload, options)
+  return cloud2murano.trigger(location.name, "data_in", payload, options)
 end
 
 function cloud2murano.initDevice(identity)
