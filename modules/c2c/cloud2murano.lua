@@ -89,12 +89,10 @@ function cloud2murano.data_in(location, options)
     -- Auto register device on data in
     r = cloud2murano.provisioned(location, options)
     if r and r.error then return r end
-    r = Device2.setIdentityState({
-      identity = location.name,
-      data_in = data
-    })
+    r = Device2.setIdentityState(data)
     if r and r.error then return r end
   end
+  data.identity = nil
 
   local payload = {{ -- a list
     values = data,
