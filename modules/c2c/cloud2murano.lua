@@ -9,8 +9,8 @@ local mcrypto = require("staging.mcrypto")
 -- Generate the name if missing
 local function setName(location)
   if type(location.name) == "string" and #(location.name) > 2 then return location.name end
-  if location.coord and location.coord.lon and location.coord.lat then
-    location.name = location.coord.lon .. "," .. location.coord.lat
+  if location.coord and location.coord.lat and location.coord.lon then
+    location.name = location.coord.lat .. "," .. location.coord.lon
   else
     location.name = tostring(location.id)
   end
