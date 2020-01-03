@@ -7,5 +7,5 @@ description: |
 
   The `identity` support the following formats:
   - `<zip code>,<COUNTRY-CODE>` eg. `20455,TW`
-  - `<longitude>,<latitude>` eg. `12.4,32.1`
+  - `<latitude>,<longitude>` eg. `12.4,32.1`
   - `<City name>` eg. `Taipei`

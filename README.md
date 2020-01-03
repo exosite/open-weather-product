@@ -26,7 +26,7 @@ To set locations:
 
 You can provide the location as one of the following:
   - `<zip code>,<COUNTRY-CODE>` eg. `20455,TW`
-  - `<longitude>,<latitude>` eg. `12.4,32.1`
+  - `<latitude>,<longitude>` eg. `12.4,32.1`
   - `<City name>` eg. `Taipei`
 
 Each configured locations will behave as a device emitting weather data every hours. You can force the update by going to the `Services -> Openweatherapi` and clicking `Apply` (no need of changing any value).
