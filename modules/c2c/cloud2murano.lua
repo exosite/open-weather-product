@@ -32,7 +32,7 @@ function cloud2murano.trigger(identity, event_type, payload, tags, options)
     }
 
     if handle_device2_event then
-      timestamp = timestamp*1000000
+      event.timestamp = event.timestamp*1000000
       handle_device2_event(event)
     end
 end
