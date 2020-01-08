@@ -96,7 +96,7 @@ function cloud2murano.data_in(location, options)
 
   local payload = {{ -- a list
     values = data,
-    timestamp = (options.timestamp or os.time(os.date("!*t")) * 1000000)
+    timestamp = options.timestamp or os.time(os.date("!*t")) * 1000000
   }}
   return cloud2murano.trigger(location.name, "data_in", payload, options)
 end
