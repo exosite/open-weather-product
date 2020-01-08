@@ -25,7 +25,7 @@ function cloud2murano.trigger(identity, event_type, payload, tags, options)
       type = event_type,
       identity = identity,
       protocol = cloudServiceName,
-      timestamp = options.timestamp or os.time(os.date("!*t")),
+      timestamp = options.timestamp or os.time(os.date("!*t")) * 1000000,
       connection_id = options.request_id or context.tracking_id,
       payload = payload,
       tags = tags
@@ -96,7 +96,7 @@ function cloud2murano.data_in(location, options)
 
   local payload = {{ -- a list
     values = data,
-    timestamp = (options.timestamp or os.time(os.date("!*t")))
+    timestamp = options.timestamp or os.time(os.date("!*t")) * 1000000
   }}
   return cloud2murano.trigger(location.name, "data_in", payload, options)
 end
