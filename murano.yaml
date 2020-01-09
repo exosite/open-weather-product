@@ -38,3 +38,5 @@ services:
   location: services
   include: '**/*.lua'
   exclude: ['*_test.lua', '*_spec.lua']
+
+init_script: init.lua
