@@ -5,6 +5,7 @@ local murano2cloud = require("c2c.murano2cloud")
 local cloudServiceName = murano2cloud.alias
 local transform = require("vendor.c2c.transform")
 local mcrypto = require("staging.mcrypto")
+local utils = require("c2c.utils")
 
 -- Generate the name if missing
 local function setName(location)
@@ -25,7 +26,7 @@ function cloud2murano.trigger(identity, event_type, payload, tags, options)
       type = event_type,
       identity = identity,
       protocol = cloudServiceName,
-      timestamp = options.timestamp or os.time(os.date("!*t")) * 1000000,
+      timestamp = utils.getTimestamp(options.timestamp),
       connection_id = options.request_id or context.tracking_id,
       payload = payload,
       tags = tags
@@ -96,7 +97,7 @@ function cloud2murano.data_in(location, options)
 
   local payload = {{ -- a list
     values = data,
-    timestamp = options.timestamp or os.time(os.date("!*t")) * 1000000
+    timestamp = utils.getTimestamp(options.timestamp)
   }}
   return cloud2murano.trigger(location.name, "data_in", payload, options)
 end

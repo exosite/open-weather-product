@@ -4,8 +4,7 @@ if identities.error then return identities end
 local configIO = require("vendor.configIO")
 if configIO then
   local config_io = {
-    --change from seconds to microseconds for Exosense
-    timestamp = configIO.timestamp * 1000000,
+    timestamp = require("c2c.utils").getTimestamp(configIO.timestamp),
     set = configIO.config_io,
     reported = configIO.config_io
   }
