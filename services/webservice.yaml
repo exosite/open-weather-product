@@ -1,0 +1,25 @@
+headers:
+  content-security-policy: "frame-ancestors 'self'; img-src data: blob: *; media-src data: blob: *; default-src 'unsafe-inline' 'unsafe-eval' 'self' data: blob: fonts.googleapis.com fonts.gstatic.com"
+
+documented_endpoints:
+  - interface
+
+api_info:
+  title: Connector-as-a-Service API.
+  description: |
+    Use this API to enable your application to access and manage your devices.
+    Authenticate your request using Basic authentication with following header:
+
+    `Authorization: Basic <Base64(<App Id>:<Secret>)>`
+
+    To test it on this page, input `<App Id>:<Secret>` in the above `Token` field.
+
+    Find more information about integrating with Connector-as-a-Service on the [Exosite official documentation page](https://docs.exosite.com/connectivity/pdaas/device-owner/).
+  version: v1
+
+security_schemes:
+  - type: basic # For External app API, See 'interface' endpoints
+  - type: apiKey # For user interactions
+
+security:
+  - apiKey

@@ -1,0 +1,32 @@
+{
+  "title": "Product portal",
+  "description": "Product consumer portal page description",
+  "companyName": "Exosite",
+  "theme": {
+    "primary": "#2C9DB6",
+    "secondary": "#222736",
+    "accent": "#F15C2E",
+    "error": "#FF5252",
+    "success": "#4CAF50"
+  },
+  "themeType": "dark",
+  "links": {
+    "info": "https://docs.exosite.com/connectivity/pdaas/device-owner/",
+    "terms": "https://exosite.com/terms-conditions",
+    "contactUs": "https://info.exosite.com/contact-us",
+    "help": "https://docs.exosite.com/connectivity/pdaas/device-owner/",
+    "helpDevice": "https://docs.exosite.com/connectivity/pdaas/device-owner/#managing-devices",
+    "helpApp": "https://docs.exosite.com/connectivity/pdaas/device-owner/#managing-applications"
+  },
+  "landingPage": {
+    "mainSlogan": "This is your main slogan here",
+    "secondarySlogan": "This is a secondary, more lengthy slogan right underneath",
+    "deviceName": "B-L475E-IOT01A",
+    "deviceSpecs": [
+      "Ultra-low-power STM32L4 Series MCUs ",
+      "64-Mbit Quad-SPI",
+      "(Macronix) Flash memory",
+      "Bluetooth® V4.1 module (SPBTLE-RF)"
+    ]
+  }
+}

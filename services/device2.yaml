@@ -17,6 +17,64 @@ resources:
     settable: true
     sync: false
     unit: ''
+  config_applications:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  config_interfaces:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  config_network:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  config_oem:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  config_otau:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  config_rules:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  data_out:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  otau_in:
+    allowed: []
+    format: string
+    settable: true
+    unit: ''
+  pdaas_reset: # Hard ownership reset
+    allowed: []
+    format: string
+    settable: true
+    sync: false
+    unit: ''
+  pdaas_claim_code: # Dynamic claim code generation
+    allowed: []
+    format: string
+    settable: true
+    sync: false
+    unit: ''
+  pdaas_user_email: # User claim from input enabled device
+    allowed: []
+    format: string
+    settable: true
+    sync: false
+    unit: ''
 
 tags_schema:
   description: Associated metadata used by the OpenWeatherMap connector.
@@ -37,3 +95,31 @@ tags_schema:
       description: The OpenWeather error if failed to convert the Identity query
       readyOnly: true
       type: string
+    apps:
+      title: Apps
+      description: |
+        Application Id with granted access to this device data & events.
+        Add here a Murano application Id to enable it (You first need to connect this Connector to the application)
+        External application starts with the "ext_" prefix.
+      type: string
+    users:
+      title: Users
+      description: |
+        Device owner email granting access to this device. Once a user uses a 'Claim Code' his email will be added automatically.
+        Removing this tag would remove user access to this device, however if 'apps' are still defined the applications will still have access.
+      type: string
+      format: email
+    claim_code:
+      title: Claim Code(s)
+      description: |
+        The code(s) usable to claim ownership of this device. The same claim code can be reused for multiple devices.
+      type: string
+    expires:
+      title: Claim Expiration
+      description: Expiration UTC Unix timestamp for the claim code.
+      type: string
+      pattern: "[0-9]+"
+  patternProperties:
+    context_[a-zA-Z0-9-_]+:
+      type: string
+      description: Context data used by this app about this device

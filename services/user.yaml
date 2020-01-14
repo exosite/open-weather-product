@@ -1,0 +1,13 @@
+
+userdata_schema:
+  description: |
+    Define here which application(s) the user has access to from the Connector Portal.
+    Keys are build with the prefix 'app_' followed by the application Id. Example: "app_hA3kdf80000" or "app_ext_sdf9a6435" for external App.
+    Find more information on https://docs.exosite.com/connectivity/pdaas/publisher/ .
+  type: object
+  patternProperties:
+    app_(ext_)?[a-zA-Z0-9_-]:
+      description: |
+        Application settings for this user in CSV format.
+        Current supported options: "default"
+      type: string

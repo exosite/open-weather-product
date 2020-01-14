@@ -1,0 +1,204 @@
+
+paths:
+  /interface/v1/listIdentities:
+    post:
+      operationId: listIdentities
+      description: Refer to http://docs.exosite.com/reference/services/device2/#listIdentities
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Refer to http://docs.exosite.com/reference/services/device2/#listIdentities
+          schema:
+            description: Refer to http://docs.exosite.com/reference/services/device2/#listIdentities
+            type: object
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+  /interface/v1/getIdentity:
+    post:
+      operationId: getIdentity
+      description: Refer to http://docs.exosite.com/reference/services/device2/#getIdentity
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Refer to http://docs.exosite.com/reference/services/device2/#getIdentity
+          schema:
+            description: Refer to http://docs.exosite.com/reference/services/device2/#getIdentity
+            type: object
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+  /interface/v1/getIdentityState:
+    post:
+      operationId: getIdentityState
+      description: Refer to http://docs.exosite.com/reference/services/device2/#getIdentityState
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Refer to http://docs.exosite.com/reference/services/device2/#getIdentityState
+          schema:
+            description: Refer to http://docs.exosite.com/reference/services/device2/#getIdentityState
+            type: object
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+  /interface/v1/setIdentityState:
+    post:
+      operationId: setIdentityState
+      description: Refer to http://docs.exosite.com/reference/services/device2/#setIdentityState
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Refer to http://docs.exosite.com/reference/services/device2/#setIdentityState
+          schema:
+            description: Refer to http://docs.exosite.com/reference/services/device2/#setIdentityState
+            type: object
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+
+  /interface/v1/claimDevices:
+    post:
+      operationId: claimDevices
+      description: Claim one or more devices from the application
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Device Claim payload
+          schema:
+            description: Device Claim payload
+            type: object
+            properties:
+              codes:
+                type: array
+                items:
+                  type: string
+                description: Claim codes
+              context:
+                type: string
+                description: Optional claim context
+            required:
+              - codes
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DeviceList"
+        default:
+          description: Unexpected error
+  /interface/v1/getTempClaimURL:
+    post:
+      operationId: getTempClaimURL
+      description: Get a claiming Url for user to claim through the IoT-Connector portal
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Get Claim Url options
+          schema:
+            description: Get Claim Url options
+            type: object
+            properties:
+              context:
+                type: string
+                description: Optional claim context
+      responses:
+        "200":
+          description: Returns the Claiming Url
+          schema:
+            description: A signed Url to the Connector Claim UI
+            type: string
+            format: url
+        default:
+          description: Unexpected error
+
+  /interface/v1/getContext:
+    post:
+      operationId: getContext
+      description: Get device Context
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Get context parameters
+          schema:
+            description: Get context parameters
+            type: object
+            required:
+              - device_id
+            properties:
+              device_id:
+                type: string
+                description: Device identifier
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+          schema:
+            description: Device context
+            type: string
+  /interface/v1/setContext:
+    post:
+      operationId: setContext
+      description: Set device context
+      security:
+        - basic: []
+      tags:
+        - interface
+      parameters:
+        - name: payload
+          in: body
+          description: Set context parameters
+          schema:
+            description: Set context parameters
+            type: object
+            required:
+              - context
+              - device_id
+            properties:
+              device_id:
+                type: string
+                description: Device identifier
+              context:
+                type: string
+                description: Claim context
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error

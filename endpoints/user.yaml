@@ -1,0 +1,114 @@
+
+paths:
+  /api/users/login:
+    post:
+      operationId: login
+      description: Login
+      tags:
+        - users
+      security: []
+      parameters:
+        - name: payload
+          in: body
+          description: Login payload
+          required: true
+          schema:
+            description: Login payload
+            type: object
+            required:
+              - user
+              - password
+            properties:
+              user:
+                $ref: "#/definitions/UserEmail"
+              password:
+                description: User password
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            description: Session token
+            type: string
+        default:
+          description: Unexpected error
+
+  /api/users/create:
+    post:
+      operationId: createUser
+      description: Create user
+      tags:
+        - users
+      security: []
+      parameters:
+        - name: payload
+          in: body
+          description: Create user payload
+          required: true
+          schema:
+            description: Create user payload
+            type: object
+            required:
+              - user
+            properties:
+              user:
+                $ref: "#/definitions/UserEmail"
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+
+  /api/users/activate:
+    post:
+      operationId: activateUser
+      description: Activate user
+      tags:
+        - users
+      security: []
+      parameters:
+        - name: payload
+          in: body
+          description: Activate user payload
+          required: true
+          schema:
+            description: Activate user payload
+            type: object
+            required:
+              - code
+            properties:
+              code:
+                description: Activation Code
+                type: string
+              password:
+                description: New user password
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            description: Session token
+            type: string
+        default:
+          description: Unexpected error
+
+  /api/users/currentUser:
+    get:
+      operationId: getUser
+      description: Get current user info
+      tags:
+        - users
+      responses:
+        "200":
+          description: Success
+          schema:
+            description: User data (from User service)
+            type: object
+        default:
+          description: Unexpected error
+
+definitions:
+  UserEmail:
+    description: User email
+    type: string
+    format: email

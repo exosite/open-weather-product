@@ -1,0 +1,114 @@
+
+paths:
+  /api/claim:
+    post:
+      operationId: claimDevice
+      description: Claim device
+      parameters:
+        - name: payload
+          in: body
+          description: Claim payload
+          schema:
+            description: Claim payload
+            type: object
+            required:
+              - code
+            properties:
+              code:
+                description: Claim code
+                type: string
+              default:
+                description: Indicates if device needs to be added to default apps
+                type: boolean
+                default: false
+      tags:
+        - devices
+      security: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DeviceList"
+        default:
+          description: Unexpected error
+
+
+  /api/devices:
+    get:
+      operationId: listDevices
+      description: List devices
+      parameters:
+        - name: app
+          in: query
+          description: ID of the app to filter devices on
+          type: string
+      tags:
+        - devices
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DeviceList"
+        default:
+          description: Unexpected error
+    post:
+      operationId: editDevices
+      description: Edit devices
+      parameters:
+        - name: payload
+          in: body
+          description: payload
+          schema:
+            description: payload
+            type: object
+            properties:
+              devices:
+                description: List of device Id to be updated
+                type: array
+                items:
+                  description: Device Identity
+                  type: string
+              add_apps:
+                description: List of Apps to assign
+                type: array
+                items:
+                  description: App Id
+                  type: string
+              remove_apps:
+                description: List of Apps to remove
+                type: array
+                items:
+                  description: App Id
+                  type: string
+      tags:
+        - devices
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DeviceList"
+        default:
+          description: Unexpected error
+
+  /api/devices/{identity}:
+    parameters:
+      - name: identity
+        in: path
+        description: Device Id
+        required: true
+        type: string
+    delete:
+      operationId: resetDevice
+      description: Reset device
+      tags:
+        - devices
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+
+definitions:
+  DeviceList:
+    description: Map of devices accessible by the user
+    type: object

@@ -9,3 +9,186 @@ description: |
   - `<zip code>,<COUNTRY-CODE>` eg. `20455,TW`
   - `<latitude>,<longitude>` eg. `12.4,32.1`
   - `<City name>` eg. `Taipei`
+
+type: P
+
+tags:
+  - pdaas
+
+operations:
+  - name: setIdentityState
+    description: Set device state
+    parameters:
+      type: object
+      description: payload
+      properties:
+        identity:
+          type: string
+          description: The device's identifier
+      required:
+        - identity
+      additionalProperties:
+        description: Values to be written in the resource
+        type:
+          - string
+          - boolean
+          - number
+  - name: getIdentity
+    description: Get device info
+    parameters:
+      type: object
+      description: payload
+      properties:
+        identity:
+          type: string
+          description: The device's identifier
+      required:
+        - identity
+  - name: getIdentityState
+    description: Get device state
+    parameters:
+      type: object
+      description: payload
+      properties:
+        identity:
+          type: string
+          description: The device's identifier
+      required:
+        - identity
+  - name: listIdentities
+    description: List devices
+    parameters:
+      type: object
+      description: payload
+      properties:
+        limit:
+          type: integer
+          description: Limit number of returned devices to indicated value (default 50).
+        offset:
+          type: integer
+          description: |-
+            When set the query returns 'limit' number of devices but skip
+            'offset' number of devices at the beginning. This is useful in
+            combination with the 'before' field when more than 'limit' of
+            identities "lastseen" are all the same.
+        order:
+          description: |-
+            Sort identities by attribute values. Use '.desc' postfix to indicate descending order.
+            You also can order by specific resources state value reported by the identity, with 'state.resource_name'.
+          type: array
+          items:
+            type: string
+            description: Attribute name to sort on.
+            pattern: "^(identity|lastseen|lastip|state\\.[^.$]+)(\\.(desc|asc))?$"
+            default: lastseen.desc
+          uniqueItems: true
+        before:
+          type: number
+          description: Returns device identities whose "lastseen" before timestamp.
+        status:
+          type: string
+          description: |-
+            Restrict devices to only those with provided statuses.
+            The following states are recognized:
+            * a "locked" identity may not connect, even with valid authentication
+            * a "reprovision" status indicates the device must reprovision because
+              its authentication key has expired
+            * an "expired" status indicates that the identity provisioning window
+              has expired and must be reset.
+            * a "provisioned" identity has associated authentication credentials
+            * a "whitelisted" identity does not have authentication credentials
+              associated and must be provisioned
+            * a "devmode" status indicates that the device that has authenticated
+              over a non secure (unencrypted) transport.  Its credentials have
+              been flagged and are no longer considered secure.
+        identity:
+          type: string
+          description: |-
+            Returns only device identities that matches given regex.
+            To restrict the list to only those devices beginning with the letter
+            "a", for example, use the following regular expression: "^a.*".
+        ipaddress:
+          type: string
+          description: Returns only device identities whose "lastip" matches given IP
+            address.
+        version:
+          type: string
+          description: Not implemented.
+  - name: getTempClaimURL
+    description: Get temporary claim URL for user to claim device using the PDaaS portal.
+    parameters:
+      type: object
+      description: payload
+      properties:
+        context:
+          type: string
+          description: Optional claim context
+  - name: claimDevices
+    description: Claim one or more devices
+    parameters:
+      type: object
+      description: payload
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+            description: Claim code
+          description: Claim codes
+        context:
+          type: string
+          description: Optional claim context
+      required:
+        - codes
+  - name: getContext
+    description: Get device context
+    parameters:
+      type: object
+      description: payload
+      properties:
+        device_id:
+          type: string
+          description: Device identifier
+      required:
+        - device_id
+  - name: setContext
+    description: Set device context
+    parameters:
+      type: object
+      description: payload
+      properties:
+        device_id:
+          type: string
+          description: Device identifier
+        context:
+          type: string
+          description: Claim context
+      required:
+        - context
+        - device_id
+
+parameters:
+  - name: claim_code
+    title: Claim Code
+    description: Claim devices by adding the claim code here. Refresh the page to get feedback.
+  - name: app_info
+    title: App Info
+    description: Application metadata for Product Web-Portal display
+    type: object
+    properties:
+      name:
+        description: Application display name, default to Id. Minimum 3 characters
+        type: string
+        maxLength: 50
+      description:
+        description: Application description
+        type: string
+        maxLength: 200
+      url:
+        description: Application link, default to id.<murano domain>
+        x-exosite-from: domain
+        type: string
+      logo_url:
+        description: Application logo_url
+        type: string
+

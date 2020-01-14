@@ -1,0 +1,147 @@
+
+paths:
+  /api/apps:
+    get:
+      operationId: listApps
+      description: List applications.
+      tags:
+        - apps
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/AppList"
+        default:
+          description: Unexpected error
+    post:
+      operationId: addApp
+      description: Add an External Application.
+      tags:
+        - apps
+      parameters:
+        - $ref: "#/parameters/SetApp"
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+
+  /api/apps/{id}:
+    parameters:
+      - $ref: "#/parameters/AppId"
+    post:
+      operationId: connectToApp
+      description: Connect to an existing application.
+      tags:
+        - apps
+      parameters:
+        - $ref: "#/parameters/SetApp"
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+    put:
+      operationId: updateApp
+      description: Update an Application options.
+      tags:
+        - apps
+      parameters:
+        - $ref: "#/parameters/SetApp"
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+    delete:
+      operationId: removeApp
+      description: Remove an Application for user scope.
+      tags:
+        - apps
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Unexpected error
+
+parameters:
+  AppId:
+    name: id
+    in: path
+    description: ID of the app
+    required: true
+    type: string
+  SetApp:
+    name: payload
+    in: body
+    description: Set application payload
+    required: true
+    schema:
+      $ref: "#/definitions/App"
+
+definitions:
+  App:
+    description: App data
+    type: object
+    properties:
+      default:
+        description: App is default for new devices
+        type: boolean
+      t:
+        description: |
+          App Type: 1 == Murano, 2 == External HTTPS
+        type: integer
+      n:
+        type: string
+        maxLength: 50
+        description: App name
+      d:
+        description: Description
+        type: string
+      u:
+        description: Link Url
+        type: string
+        format: uri
+      l:
+        description: Logo Url
+        type: string
+        format: uri
+      dm:
+        description: |
+          Data model (Optional), (1 == Identity, 2 == Exosense, default is identity)
+        type: integer
+      c:
+        description: Connected (0 not yet connected, 1 connected)
+        readOnly: true
+        type: integer
+      tr_st:
+        description: Last Trigger status code
+        readOnly: true
+        type: string
+      tr_err:
+        description: Last Trigger error message
+        readOnly: true
+        type: string
+      td:
+        description: External App connectivity data
+        type: object
+        properties:
+          c:
+            description: Callback Url
+            type: string
+            format: uri
+          t:
+            description: Authentication type
+            type: string
+            enum:
+              - basic
+              - token
+          s:
+            description: Secret
+            type: string
+          tp:
+            description: Token Prefix
+            type: string
+  AppList:
+    description: Map of apps accessible by the user
+    type: object

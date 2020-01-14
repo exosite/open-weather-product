@@ -15,6 +15,11 @@ options:
   safeNamespace: vendor
   safeConfigs:
     - interface
+    - webservice
+    - device2.protocol
+    - device2.provisioning
+    - device2.resources
+    - config.auto_update
 
 env_schema:
   description: |
@@ -29,6 +34,11 @@ env_schema:
     You can modify the incoming payload data by updating the `vendor.c2c.transform` module.
     NOTE: for ExoSense compatibility, you should then also change the `vendor.c2c.transform` accordingly.
 
+assets:
+  location: assets
+  include: '**/*'
+  exclude: []
+  default_page: index.html
 modules:
   location: modules
   include: '**/*.lua'
