@@ -32,9 +32,7 @@ function cloud2murano.trigger(identity, event_type, payload, tags, options)
       tags = tags
     }
 
-    if handle_device2_event then
-      handle_device2_event(event)
-    end
+    Interface.trigger({event=event.type, data=event})
 end
 
 function cloud2murano.provisioned(location, options)
