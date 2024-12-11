@@ -6,11 +6,11 @@
 
 -- Schema defining the data passed from the `vendor.c2c.transform` module.
 local config_io = [[
- {
+{
   "channels": {
     "humidity": {
       "display_name": "Humidity",
-      "description": "Humidity",
+      "description": "Humidity (%)",
       "properties": {
         "data_type": "HUMIDITY",
         "data_unit": "PERCENT"
@@ -18,7 +18,7 @@ local config_io = [[
     },
     "pressure": {
       "display_name": "Pressure",
-      "description": "Pressure",
+      "description": "Pressure (atm)",
       "properties": {
         "data_type": "PRESSURE",
         "data_unit": "ATMOSPHERE"
@@ -26,66 +26,66 @@ local config_io = [[
     },
     "temp": {
       "display_name": "Temperature",
-      "description": "Temperature",
+      "description": "Temperature (ºC)",
       "properties": {
         "data_type": "TEMPERATURE",
-        "data_unit": "C"
+        "data_unit": "DEG_CELSIUS"
       }
     },
     "temp_min": {
-      "display_name": "Min Temperature",
-      "description": "Minimum temperature or the day",
+      "display_name": "Low Temperature",
+      "description": "Minimum temperature (ºC) or the day",
       "properties": {
         "data_type": "TEMPERATURE",
-        "data_unit": "C"
+        "data_unit": "DEG_CELSIUS"
       }
     },
     "temp_max": {
-      "display_name": "Max Temperature",
-      "description": "Maximum temperature of the day",
+      "display_name": "High Temperature",
+      "description": "Maximum temperature (ºC) of the day",
       "properties": {
         "data_type": "TEMPERATURE",
-        "data_unit": "C"
+        "data_unit": "DEG_CELSIUS"
       }
     },
     "wind_speed": {
       "display_name": "Wind Speed",
-      "description": "Wind speed in meter/sec",
+      "description": "Wind speed (m/s)",
       "properties": {
         "data_type": "SPEED",
-        "data_unit": "m/s"
+        "data_unit": "METER_PER_SEC"
       }
     },
     "wind_deg": {
       "display_name": "Wind Direction",
-      "description": "Wind direction in Degrees",
+      "description": "Wind direction (º)",
       "properties": {
         "data_type": "ANGLE",
         "data_unit": "DEGREE"
       }
     },
     "clouds": {
-      "display_name": "Clouds",
-      "description": "Clouds coverage %",
+      "display_name": "Cloud Coverage",
+      "description": "Cloud coverage (%)",
       "properties": {
         "data_type": "PERCENTAGE",
-        "data_unit": "%"
+        "data_unit": "PERCENT"
       }
     },
     "rain": {
       "display_name": "Rain",
-      "description": "Rain volume for the last 1 hour, mm",
+      "description": "Rain volume (mm) over past 1 hour",
       "properties": {
         "data_type": "LENGTH",
-        "data_unit": "mm"
+        "data_unit": "MILLIMETERS"
       }
     },
     "snow": {
       "display_name": "Snow",
-      "description": "Snow volume for the last 1 hour, mm",
+      "description": "Snow volume (mm) over past 1 hour",
       "properties": {
         "data_type": "LENGTH",
-        "data_unit": "mm"
+        "data_unit": "MILLIMETERS"
       }
     },
     "gps": {
@@ -93,7 +93,6 @@ local config_io = [[
       "description": "Location",
       "properties": {
         "data_type": "LOCATION",
-        "primitive_type": "JSON",
         "data_unit": "LAT_LONG"
       }
     }
@@ -102,6 +101,6 @@ local config_io = [[
 ]]
 
 return {
-  timestamp = 1563939215, -- Unix timestamp of this schema version update
+  timestamp = 1733870997, -- Unix timestamp of this schema version update
 	config_io = config_io,
 }
