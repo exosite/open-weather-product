@@ -92,38 +92,3 @@ paths:
           schema:
             type: object
             description: Location weather, find details on https://openweathermap.org/current
-
-  /group:
-    get:
-      description: Get bulk weather data
-      operationId: getBulkWeather
-      parameters:
-        - name: id
-          in: query
-          description: List of location ids
-          type: array
-          required: true
-          maxItems: 20
-          items:
-            type: integer
-            description: Location Id
-          collectionFormat: csv
-        - $ref: '#/parameters/Units'
-        - $ref: '#/parameters/Lang'
-        - $ref: '#/parameters/Appid'
-      responses:
-        default:
-          description: Bulk request response
-          schema:
-            type: object
-            description: Bulk request response
-            properties:
-              cnt:
-                description: Number of location returned
-                type: integer
-              list:
-                description: List of location weather
-                type: array
-                items:
-                  description: Location weather, find details on https://openweathermap.org/current
-                  type: object

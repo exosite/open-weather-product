@@ -21,12 +21,16 @@ end
 
 local function flush(ids, acc)
   if not ids or not ids[1] then return acc end
-  local r = murano.services[murano2cloud.alias].getBulkWeather({ id = ids })
-  if r and r.error then return r end
+  local idList = {}
+  for index, value in ipairs(ids) do
+    local r = murano.services[murano2cloud.alias].getWeather({ id = value })
+    if r and r.error then return r end
+    table.insert( idList, r)
+  end
   if not acc then
-    acc = r.list
+    acc = idList
   else
-    for i, location in ipairs(r.list) do
+    for i, location in ipairs(idList) do
       table.insert(acc, location)
     end
   end
